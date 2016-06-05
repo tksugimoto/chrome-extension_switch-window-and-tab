@@ -1,0 +1,27 @@
+{
+	"name": "タブ・ウインドウ切り替え",
+	"version": "0.1",
+	"manifest_version": 2,
+
+	"description": "",
+
+	"permissions": [
+		"tabs",
+		"<all_urls>"
+	],
+
+	"background": {
+		"scripts": [
+			"background.js"
+		]
+	},
+
+	"commands": {
+		"switch_tab": {
+			"description": "タブの切り替えウィンドウ表示",
+			"suggested_key": {
+				"default": "Ctrl+Space"
+			}
+		}
+	}
+}
