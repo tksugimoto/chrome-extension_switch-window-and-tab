@@ -1,5 +1,6 @@
 "use strict";
 
+var TAB_INDEX = 1;
 var tabList = [];
 
 chrome.windows.getAll({
@@ -22,7 +23,7 @@ chrome.windows.getAll({
 		var a = document.createElement("a");
 		a.innerText = activeTab.title;
 		a.href = activeTab.url;
-		a.tabIndex = 1;
+		a.tabIndex = TAB_INDEX;
 		a.className = "window-link"
 		a.onclick = () => {
 			chrome.windows.update(window.id, {
@@ -71,6 +72,7 @@ chrome.windows.getAll({
 
 var searchWordInput = document.getElementById("search-word");
 searchWordInput.focus();
+searchWordInput.tabIndex = TAB_INDEX;
 searchWordInput.addEventListener("keyup", evt => {
 	var value = searchWordInput.value.toLowerCase();
 	modeChange(value ? "tab-search" : "window-list");
