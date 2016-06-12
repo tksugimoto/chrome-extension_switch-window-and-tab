@@ -15,14 +15,17 @@ chrome.windows.getAll({
 	}).forEach(window => {
 		var container = document.getElementById("container");
 		var div = document.createElement("div");
+
+		var activeTab = window.tabs.find(tab => tab.active);
 		var a = document.createElement("a");
-		a.innerText = window.tabs.find(tab => tab.active).title;
-		a.href = "#";
+		a.innerText = activeTab.title;
+		a.href = activeTab.url;
 		a.tabIndex = 1;
 		a.onclick = () => {
 			chrome.windows.update(window.id, {
 				focused: true
 			});
+			return false;
 		};
 		div.appendChild(a);
 		container.appendChild(div);
