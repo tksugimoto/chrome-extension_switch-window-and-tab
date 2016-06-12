@@ -18,6 +18,7 @@ chrome.windows.getAll({
 		var a = document.createElement("a");
 		a.innerText = window.tabs.find(tab => tab.active).title;
 		a.href = "#";
+		a.tabIndex = 1;
 		a.onclick = () => {
 			chrome.windows.update(window.id, {
 				focused: true
@@ -46,7 +47,9 @@ chrome.windows.getAll({
 		var ul = document.createElement("ul");
 		window.tabs.forEach(tab => {
 			var li = document.createElement("li");
-			li.innerText = tab.title;
+			var tabLink = document.createElement("tab-link");
+			tabLink.setTab(tab);
+			li.appendChild(tabLink);
 			ul.appendChild(li);
 		});
 		div.appendChild(ul);
