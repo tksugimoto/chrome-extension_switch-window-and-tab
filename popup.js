@@ -4,10 +4,15 @@ chrome.windows.getAll({
 	// tab情報を含める
 	populate: true,
 	windowTypes: [
+		"popup",
 		"normal"
 	]
 }, windows => {
-	windows.forEach(window => {
+	var selfUrl = location.href;
+	windows.filter(window => {
+		var isThisWindow = window.tabs.length === 1 && window.tabs[0].url === selfUrl;
+		return !isThisWindow;
+	}).forEach(window => {
 		var container = document.getElementById("container");
 		var div = document.createElement("div");
 		var a = document.createElement("a");
