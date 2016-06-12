@@ -8,6 +8,31 @@
 			width: 100%;
 			margin: 0;
 		}
+		#header > p {
+			font-size: 200%;
+			margin: 0;
+			padding: 10px;
+		}
+		.mode-tab {
+			cursor: pointer;
+		}
+		body[data-mode="window-list"] .mode-tab#window-list,
+		body[data-mode="tab-search"]  .mode-tab#tab-search {
+			border: 1px gray solid;
+			border-bottom: none;
+			background: #eee;
+		}
+		.left {
+			float: left;
+		}
+		.right {
+			float: right;
+		}
+		.clearfix:after {
+			content: "";
+			clear: both;
+			display: block;
+		}
 		#container {
 			display: -webkit-box;
 			display: box;
@@ -33,10 +58,20 @@
 		#container > div:nth-child(3n+3) {
 			background: #92bd3a;
 		}
+		body[data-mode="tab-search"] a.window-link {
+			display: none;
+		}
 	</style>
 	<link rel="import" href="/web-components/tab-link.html">
 </head>
-<body>
+<body data-mode="window-list">
+	<div id="header" class="clearfix">
+		<p class="left mode-tab" id="window-list">ウィンドウ一覧</p>
+		<p class="left mode-tab" id="tab-search">タブ検索</p>
+		<p class="right">
+			<input id="search-word" placeholder="タブ検索">
+		</p>
+	</div>
 	<div id="container"></div>
 	<script src="popup.js"></script>
 </body>

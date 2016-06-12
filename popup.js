@@ -1,5 +1,7 @@
 "use strict";
 
+var tabList = [];
+
 chrome.windows.getAll({
 	// tab情報を含める
 	populate: true,
@@ -21,6 +23,7 @@ chrome.windows.getAll({
 		a.innerText = activeTab.title;
 		a.href = activeTab.url;
 		a.tabIndex = 1;
+		a.className = "window-link"
 		a.onclick = () => {
 			chrome.windows.update(window.id, {
 				focused: true
@@ -54,9 +57,47 @@ chrome.windows.getAll({
 			tabLink.setTab(tab);
 			li.appendChild(tabLink);
 			ul.appendChild(li);
+			tabList.push({
+				elem: li,
+				url: tab.url,
+				title: tab.title
+			});
 		});
 		div.appendChild(ul);
 
 		console.log(window)
 	});
+});
+
+var searchWordInput = document.getElementById("search-word");
+searchWordInput.focus();
+searchWordInput.addEventListener("keyup", evt => {
+	var value = searchWordInput.value.toLowerCase();
+	modeChange(value ? "tab-search" : "window-list");
+
+	tabList.forEach(tab => {
+		var targetText = (tab.url + tab.title).toLowerCase();
+		var isMatched = targetText.includes(value);
+		tab.elem.style.display = isMatched ? "" : "none";
+	});
+});
+searchWordInput.addEventListener("keydown", evt => {
+	// Escが押されたら入力欄を空にする
+	//   ※keyupだと日本語入力で未確定状態からEscでも反応してしまう
+	if (evt.keyCode === 27) {
+		searchWordInput.value = "";
+	}
+});
+
+function modeChange(modeName) {
+	document.body.setAttribute("data-mode", modeName);
+}
+
+document.querySelectorAll(".mode-tab").forEach(elem => {
+	elem.addEventListener("click", () => {
+		modeChange(elem.id);
+	});
+});
+document.getElementById("tab-search").addEventListener("click", () => {
+	searchWordInput.focus();
 });
