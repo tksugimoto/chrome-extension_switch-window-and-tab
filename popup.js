@@ -36,15 +36,15 @@ chrome.windows.getAll({
 				//img.style.border = "2px double black";
 				a.appendChild(img);
 			}
-
-			var ul = document.createElement("ul");
-			window.tabs.forEach(tab => {
-				var li = document.createElement("li");
-				li.innerText = tab.title;
-				ul.appendChild(li);
-			});
-			div.appendChild(ul);
 		});
+
+		var ul = document.createElement("ul");
+		window.tabs.forEach(tab => {
+			var li = document.createElement("li");
+			li.innerText = tab.title;
+			ul.appendChild(li);
+		});
+		div.appendChild(ul);
 
 		console.log(window)
 	});
