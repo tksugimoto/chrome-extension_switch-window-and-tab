@@ -34,23 +34,6 @@ chrome.windows.getAll({
 		div.appendChild(a);
 		container.appendChild(div);
 
-		chrome.tabs.captureVisibleTab(window.id, {
-			format: "jpeg",
-			quality: 50
-		}, dataUrl => {
-			if (typeof dataUrl === "undefined") {
-				var p = document.createElement("p");
-				p.innerText = "最小化されているためSS撮影不可"
-				a.appendChild(p);
-			} else {
-				var img = document.createElement("img");
-				img.src = dataUrl;
-				img.style.width = "95%";
-				//img.style.border = "2px double black";
-				a.appendChild(img);
-			}
-		});
-
 		var ul = document.createElement("ul");
 		window.tabs.forEach(tab => {
 			var li = document.createElement("li");
@@ -67,6 +50,26 @@ chrome.windows.getAll({
 		div.appendChild(ul);
 
 		console.log(window)
+
+		// SS撮影の処理が重い
+		setTimeout(() => {
+			chrome.tabs.captureVisibleTab(window.id, {
+				format: "jpeg",
+				quality: 50
+			}, dataUrl => {
+				if (typeof dataUrl === "undefined") {
+					var p = document.createElement("p");
+					p.innerText = "最小化されているためSS撮影不可"
+					a.appendChild(p);
+				} else {
+					var img = document.createElement("img");
+					img.src = dataUrl;
+					img.style.width = "95%";
+					//img.style.border = "2px double black";
+					a.appendChild(img);
+				}
+			});
+		}, 300);
 	});
 });
 
