@@ -63,12 +63,14 @@
 		}
 	</style>
 	<link rel="import" href="/web-components/tab-link.html">
+	<link rel="import" href="/web-components/check-box.html">
 </head>
 <body data-mode="window-list">
 	<div id="header" class="clearfix">
 		<p class="left mode-tab" id="window-list">ウィンドウ一覧</p>
 		<p class="left mode-tab" id="tab-search">タブ検索</p>
 		<p class="right">
+			<check-box id="display-screenshot" title="表示時にスクリーンショットを表示するか">スクショ表示</check-box>
 			<input id="search-word" placeholder="タブ検索">
 		</p>
 	</div>

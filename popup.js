@@ -3,6 +3,12 @@
 var TAB_INDEX = 1;
 var tabList = [];
 
+var displayScreenshot = document.getElementById("display-screenshot");
+displayScreenshot.checked = localStorage["display-screenshot"] === "true";
+displayScreenshot.addEventListener("change", evt => {
+	localStorage["display-screenshot"] = evt.checked;
+});
+
 chrome.windows.getAll({
 	// tab情報を含める
 	populate: true,
@@ -52,7 +58,7 @@ chrome.windows.getAll({
 		console.log(window)
 
 		// SS撮影の処理が重い
-		setTimeout(() => {
+		displayScreenshot.checked && setTimeout(() => {
 			chrome.tabs.captureVisibleTab(window.id, {
 				format: "jpeg",
 				quality: 50
