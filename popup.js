@@ -45,6 +45,10 @@ chrome.windows.getAll({
 			var li = document.createElement("li");
 			var tabLink = document.createElement("tab-link");
 			tabLink.setTab(tab);
+			if (tab.active) {
+				// TODO: 見やすい目立たせ方にする
+				tabLink.style.backgroundColor = "white";
+			}
 			li.appendChild(tabLink);
 			ul.appendChild(li);
 			tabList.push({
