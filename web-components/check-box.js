@@ -40,6 +40,9 @@
 		if (this.hasAttribute("disabled")) {
 			this.checkbox.disabled = true;
 		}
+		if (this.hasAttribute("tabindex")) {
+			this.checkbox.tabIndex = this.getAttribute("tabindex");
+		}
 		
 		this.checkbox.addEventListener("change", (evt) => {
 			this.updateCheckedAttribute();
