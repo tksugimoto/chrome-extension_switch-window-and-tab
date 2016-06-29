@@ -107,7 +107,7 @@ searchWordInput.addEventListener("keyup", evt => {
 				bookmarks.forEach(bookmark => {
 					var li = document.createElement("li");
 					var a = document.createElement("a");
-					a.innerText = bookmark.title || "（空白）";
+					a.innerText = bookmark.title || bookmark.url;
 					a.href = bookmark.url;
 					a.addEventListener("click", function (evt) {
 						evt.preventDefault();
