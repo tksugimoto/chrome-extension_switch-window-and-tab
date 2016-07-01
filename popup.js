@@ -105,22 +105,25 @@ searchWordInput.addEventListener("keyup", evt => {
 			if (bookmarks.length > 0) {
 				container_bookmarks.style.display = "";
 				bookmarks.forEach(bookmark => {
-					var li = document.createElement("li");
-					var a = document.createElement("a");
-					a.innerText = bookmark.title || bookmark.url;
-					a.href = bookmark.url;
-					a.addEventListener("click", function (evt) {
-						evt.preventDefault();
-						chrome.tabs.create({
-							url: this.href
-						}, tab=> {
-							chrome.windows.update(tab.windowId, {
-								focused: true
+					var isLink = !!bookmark.url;
+					if (isLink) {
+						var li = document.createElement("li");
+						var a = document.createElement("a");
+						a.innerText = bookmark.title || bookmark.url;
+						a.href = bookmark.url;
+						a.addEventListener("click", function (evt) {
+							evt.preventDefault();
+							chrome.tabs.create({
+								url: this.href
+							}, tab=> {
+								chrome.windows.update(tab.windowId, {
+									focused: true
+								});
 							});
 						});
-					});
-					li.appendChild(a);
-					ul_bookmarks.appendChild(li);
+						li.appendChild(a);
+						ul_bookmarks.appendChild(li);
+					}
 				});
 			}
 		});
