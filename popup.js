@@ -90,6 +90,8 @@ chrome.windows.getAll({
 			});
 		} else if (evt.key === " " && evt.target.tagName === "A") {
 			evt.target.click();
+		} else if (evt.key === " " && evt.target.tagName === "TAB-LINK") {
+			evt.target.click();
 		}
 	});
 });

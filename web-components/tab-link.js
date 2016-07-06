@@ -27,7 +27,8 @@
 			});
 		}
 		
-		this.shadowRoot.getElementById("container").addEventListener("click", (evt) => {
+		var link = this.shadowRoot.getElementById("container");
+		link.addEventListener("click", (evt) => {
 			evt.preventDefault();
 			chrome.tabs.update(tab.id, {
 				active: true
@@ -35,6 +36,9 @@
 			chrome.windows.update(tab.windowId, {
 				focused: true
 			});
+		});
+		this.addEventListener("click", () => {
+			link.click();
 		});
 	};
 	
