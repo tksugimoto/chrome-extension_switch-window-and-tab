@@ -6,6 +6,7 @@
 	"description": "",
 
 	"permissions": [
+		"bookmarks",
 		"tabs",
 		"<all_urls>"
 	],
