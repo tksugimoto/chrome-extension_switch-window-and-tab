@@ -18,16 +18,17 @@ chrome.windows.getAll({
 	]
 }, windows => {
 	var selfUrl = location.href;
-	windows.filter(window => {
+	var targetWindows = windows.filter(window => {
 		var isThisWindow = window.tabs.length === 1 && window.tabs[0].url === selfUrl;
 		return !isThisWindow;
-	}).forEach(window => {
+	});
+	targetWindows.forEach((window, index) => {
 		var container = document.getElementById("container");
 		var div = document.createElement("div");
 
 		var activeTab = window.tabs.find(tab => tab.active);
 		var a = document.createElement("a");
-		a.innerText = activeTab.title;
+		a.innerText = index + "\n" + activeTab.title;
 		a.href = activeTab.url;
 		a.tabIndex = TAB_INDEX;
 		a.className = "window-link"
@@ -80,6 +81,14 @@ chrome.windows.getAll({
 				}
 			});
 		}, 300);
+	});
+
+	document.body.addEventListener("keydown", evt => {
+		if (evt.target !== searchWordInput && /^\d+$/.test(evt.key)) {
+			chrome.windows.update(targetWindows[evt.key].id, {
+				focused: true
+			});
+		}
 	});
 });
 
