@@ -88,6 +88,8 @@ chrome.windows.getAll({
 			chrome.windows.update(targetWindows[evt.key].id, {
 				focused: true
 			});
+		} else if (evt.key === " " && evt.target.tagName === "A") {
+			evt.target.click();
 		}
 	});
 });
