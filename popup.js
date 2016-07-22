@@ -3,11 +3,16 @@
 var TAB_INDEX = 1;
 var tabList = [];
 
-var displayScreenshot = document.getElementById("display-screenshot");
-displayScreenshot.checked = localStorage["display-screenshot"] === "true";
-displayScreenshot.addEventListener("change", evt => {
-	localStorage["display-screenshot"] = evt.checked;
-});
+function setupCheckBox(id) {
+	let elem = document.getElementById(id);
+	elem.checked = localStorage[id] === "true";
+	elem.addEventListener("change", evt => {
+		localStorage[id] = evt.checked;
+	});
+	return elem;
+}
+
+var displayScreenshot = setupCheckBox("display-screenshot");
 
 chrome.windows.getAll({
 	// tab情報を含める
