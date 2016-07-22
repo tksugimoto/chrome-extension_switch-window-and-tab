@@ -13,6 +13,7 @@ function setupCheckBox(id) {
 }
 
 var displayScreenshot = setupCheckBox("display-screenshot");
+var popupWindowFirst = setupCheckBox("popup-window-first");
 
 chrome.windows.getAll({
 	// tab情報を含める
@@ -27,6 +28,14 @@ chrome.windows.getAll({
 		var isThisWindow = window.tabs.length === 1 && window.tabs[0].url === selfUrl;
 		return !isThisWindow;
 	});
+	if (popupWindowFirst.checked) {
+		targetWindows.sort((win1, win2) => {
+			if (win1.type === "popup") return -1;
+			if (win2.type === "popup") return 1;
+			return 0;
+
+		});
+	}
 	targetWindows.forEach((window, index) => {
 		var container = document.getElementById("container");
 		var div = document.createElement("div");
