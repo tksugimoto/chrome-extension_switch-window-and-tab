@@ -30,6 +30,9 @@ chrome.windows.getAll({
 	});
 	if (popupWindowFirst.checked) {
 		targetWindows.sort((win1, win2) => {
+			if (win1.type === win2.type) {
+				return win1.id - win2.id;
+			}
 			if (win1.type === "popup") return -1;
 			if (win2.type === "popup") return 1;
 			return 0;
