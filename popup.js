@@ -63,7 +63,8 @@ chrome.windows.getAll({
 		div.addEventListener("drop", evt => {
 			if (draggingData !== null) {
 				const target = draggingData.elem;
-				if (target.parentNode === ul) {
+				const oldParent = target.parentNode;
+				if (oldParent === ul) {
 					// 同じWindow内の移動はしない
 					return;
 				}
@@ -72,6 +73,11 @@ chrome.windows.getAll({
 					windowId: window.id,
 					index: -1
 				});
+				if (oldParent.children.length === 0) {
+					// Window内のタブが無くなってWindowが閉じた
+					const div = oldParent.parentNode;
+					div.parentNode.removeChild(div);
+				}
 			}
 		});
 		div.addEventListener("dragover", evt => {
