@@ -62,7 +62,12 @@ chrome.windows.getAll({
 		var ul = document.createElement("ul");
 		div.addEventListener("drop", evt => {
 			if (draggingData !== null) {
-				ul.appendChild(draggingData.elem);
+				const target = draggingData.elem;
+				if (target.parentNode === ul) {
+					// 同じWindow内の移動はしない
+					return;
+				}
+				ul.appendChild(target);
 				chrome.tabs.move(draggingData.tabId, {
 					windowId: window.id,
 					index: -1
