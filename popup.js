@@ -39,6 +39,7 @@ chrome.windows.getAll({
 
 		});
 	}
+	let draggingData = null;
 	targetWindows.forEach((window, index) => {
 		var container = document.getElementById("container");
 		var div = document.createElement("div");
@@ -59,6 +60,18 @@ chrome.windows.getAll({
 		container.appendChild(div);
 
 		var ul = document.createElement("ul");
+		div.addEventListener("drop", evt => {
+			if (draggingData !== null) {
+				ul.appendChild(draggingData.elem);
+				chrome.tabs.move(draggingData.tabId, {
+					windowId: window.id,
+					index: -1
+				});
+			}
+		});
+		div.addEventListener("dragover", evt => {
+			evt.preventDefault();
+		});
 		window.tabs.forEach(tab => {
 			var li = document.createElement("li");
 			var tabLink = document.createElement("tab-link");
@@ -67,6 +80,16 @@ chrome.windows.getAll({
 				// TODO: 見やすい目立たせ方にする
 				tabLink.style.backgroundColor = "white";
 			}
+			li.addEventListener("dragstart", evt => {
+				draggingData = {
+					elem: li,
+					tabId: tab.id
+				};
+				evt.dataTransfer.setData("tabId", tab.id);
+			});
+			li.addEventListener("dragend", evt => {
+				draggingData = null;
+			});
 			li.appendChild(tabLink);
 			ul.appendChild(li);
 			tabList.push({
