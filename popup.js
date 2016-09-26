@@ -69,6 +69,9 @@ chrome.windows.getAll({
 					return;
 				}
 				ul.appendChild(target);
+				// 参照渡しでwindowIdを変更する
+				// TODO: windowIdをちゃんと更新する仕組み作成
+				draggingData.tab.windowId = window.id;
 				chrome.tabs.move(draggingData.tabId, {
 					windowId: window.id,
 					index: -1
@@ -94,6 +97,7 @@ chrome.windows.getAll({
 			li.addEventListener("dragstart", evt => {
 				draggingData = {
 					elem: li,
+					tab: tab,
 					tabId: tab.id
 				};
 				evt.dataTransfer.setData("tabId", tab.id);
