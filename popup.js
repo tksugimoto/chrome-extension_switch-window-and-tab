@@ -138,15 +138,24 @@ chrome.windows.getAll({
 		}, 300);
 	});
 
+	const onKeydownFunctions = {
+		" ": evt => {
+			const tagName = evt.target.tagName;
+			if (tagName === "A" || tagName === "TAB-LINK") {
+				evt.target.click();
+			}
+		}
+	};
 	document.body.addEventListener("keydown", evt => {
-		if (evt.target !== searchWordInput && /^\d+$/.test(evt.key)) {
-			chrome.windows.update(targetWindows[evt.key].id, {
-				focused: true
-			});
-		} else if (evt.key === " " && evt.target.tagName === "A") {
-			evt.target.click();
-		} else if (evt.key === " " && evt.target.tagName === "TAB-LINK") {
-			evt.target.click();
+		if (evt.target !== searchWordInput) {
+			if (/^\d+$/.test(evt.key)) {
+				chrome.windows.update(targetWindows[evt.key].id, {
+					focused: true
+				});
+				return;
+			}
+			const func = onKeydownFunctions[evt.key];
+			if (func) func(evt);
 		}
 	});
 });
