@@ -139,6 +139,27 @@ chrome.windows.getAll({
 	});
 
 	const onKeydownFunctions = {
+		"q": () => {
+			// 最後から3個目のwindow
+			const index = targetWindows.length - 3;
+			chrome.windows.update(targetWindows[index].id, {
+				focused: true
+			});
+		},
+		"w": () => {
+			// 最後から2個目のwindow
+			const index = targetWindows.length - 2;
+			chrome.windows.update(targetWindows[index].id, {
+				focused: true
+			});
+		},
+		"e": () => {
+			// 最後のwindow
+			const index = targetWindows.length - 1;
+			chrome.windows.update(targetWindows[index].id, {
+				focused: true
+			});
+		},
 		" ": evt => {
 			const tagName = evt.target.tagName;
 			if (tagName === "A" || tagName === "TAB-LINK") {
