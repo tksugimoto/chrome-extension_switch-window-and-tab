@@ -175,7 +175,7 @@ chrome.windows.getAll({
 				});
 				return;
 			}
-			const func = onKeydownFunctions[evt.key];
+			const func = onKeydownFunctions[evt.key.toLowerCase()];
 			if (func) func(evt);
 		}
 	});
