@@ -169,6 +169,7 @@ chrome.windows.getAll({
 	};
 	document.body.addEventListener("keydown", evt => {
 		if (evt.target !== searchWordInput) {
+			if (evt.ctrlKey) return;
 			if (/^\d+$/.test(evt.key)) {
 				chrome.windows.update(targetWindows[evt.key].id, {
 					focused: true
