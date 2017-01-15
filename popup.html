@@ -43,6 +43,7 @@
 			width: 100%;
 			word-wrap : break-word;
 			text-align: center;
+			position: relative;
 		}
 		#container ul {
 			-webkit-padding-start: 20px;
@@ -60,6 +61,37 @@
 		}
 		body[data-mode="tab-search"] a.window-link {
 			display: none;
+		}
+		body {
+			counter-reset: window -1;
+		}
+		#container > div:nth-child(-n+10):before {
+			counter-increment: window;
+			content: counter(window);
+			left: 0;
+		}
+		#container > div:nth-last-child(-n+3):after {
+			right: 0;
+		}
+		#container > div:nth-last-child(3):after {
+			content: "q";
+		}
+		#container > div:nth-last-child(2):after {
+			content: "w";
+		}
+		#container > div:nth-last-child(1):after {
+			content: "e";
+		}
+		#container > div:nth-child(-n+10):before,
+		#container > div:nth-last-child(-n+3):after {
+			position: absolute;
+			top: 0;
+			background: white;
+			padding: 2px;
+		}
+		body[data-now-searching="true"] #container > div:nth-child(-n+10):before,
+		body[data-now-searching="true"] #container > div:nth-last-child(-n+3):after {
+			content: none;
 		}
 	</style>
 	<link rel="import" href="/web-components/tab-link.html">

@@ -192,6 +192,12 @@ var container_bookmarks = document.getElementById("container_bookmarks");
 var ul_bookmarks = document.getElementById("search-result_bookmarks");
 
 var searchWordInput = document.getElementById("search-word");
+searchWordInput.addEventListener("focus", () => {
+	document.body.setAttribute("data-now-searching", "true");
+});
+searchWordInput.addEventListener("blur", () => {
+	document.body.setAttribute("data-now-searching", "false");
+});
 searchWordInput.focus();
 searchWordInput.tabIndex = TAB_INDEX;
 searchWordInput.addEventListener("keyup", evt => {
