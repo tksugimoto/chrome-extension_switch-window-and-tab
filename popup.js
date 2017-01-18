@@ -220,7 +220,10 @@ searchWordInput.addEventListener("keyup", evt => {
 					if (isLink) {
 						var li = document.createElement("li");
 						var a = document.createElement("a");
-						a.innerText = bookmark.title || bookmark.url;
+						const img = document.createElement("img");
+						img.src = `chrome://favicon/${bookmark.url}`;
+						a.appendChild(img);
+						a.appendChild(document.createTextNode(bookmark.title || bookmark.url));
 						a.href = bookmark.url;
 						a.addEventListener("click", function (evt) {
 							evt.preventDefault();
