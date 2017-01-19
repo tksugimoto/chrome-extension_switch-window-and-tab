@@ -121,8 +121,6 @@ chrome.windows.getAll({
 		});
 		div.appendChild(ul);
 
-		console.log(window)
-
 		// SS撮影の処理が重い
 		displayScreenshot.checked && setTimeout(() => {
 			chrome.tabs.captureVisibleTab(window.id, {
