@@ -4,7 +4,7 @@ const TAB_INDEX = 1;
 const tabList = [];
 
 function setupCheckBox(id) {
-	let elem = document.getElementById(id);
+	const elem = document.getElementById(id);
 	elem.checked = localStorage[id] === "true";
 	elem.addEventListener("change", evt => {
 		localStorage[id] = evt.checked;
