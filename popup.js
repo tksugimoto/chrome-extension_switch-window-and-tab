@@ -1,7 +1,7 @@
 "use strict";
 
-var TAB_INDEX = 1;
-var tabList = [];
+const TAB_INDEX = 1;
+const tabList = [];
 
 function setupCheckBox(id) {
 	let elem = document.getElementById(id);
@@ -12,9 +12,9 @@ function setupCheckBox(id) {
 	return elem;
 }
 
-var displayScreenshot = setupCheckBox("display-screenshot");
-var popupWindowFirst = setupCheckBox("popup-window-first");
-var allow_only_half_width_char = (elem => {
+const displayScreenshot = setupCheckBox("display-screenshot");
+const popupWindowFirst = setupCheckBox("popup-window-first");
+let allow_only_half_width_char = (elem => {
 	elem.addEventListener("change", evt => {
 		allow_only_half_width_char = evt.checked;
 	});
@@ -29,9 +29,9 @@ chrome.windows.getAll({
 		"normal"
 	]
 }, windows => {
-	var selfUrl = location.href;
-	var targetWindows = windows.filter(window => {
-		var isThisWindow = window.tabs.length === 1 && window.tabs[0].url === selfUrl;
+	const selfUrl = location.href;
+	const targetWindows = windows.filter(window => {
+		const isThisWindow = window.tabs.length === 1 && window.tabs[0].url === selfUrl;
 		return !isThisWindow;
 	});
 	if (popupWindowFirst.checked) {
@@ -47,11 +47,11 @@ chrome.windows.getAll({
 	}
 	let draggingData = null;
 	targetWindows.forEach((window, index) => {
-		var container = document.getElementById("container");
-		var div = document.createElement("div");
+		const container = document.getElementById("container");
+		const div = document.createElement("div");
 
-		var activeTab = window.tabs.find(tab => tab.active);
-		var a = document.createElement("a");
+		const activeTab = window.tabs.find(tab => tab.active);
+		const a = document.createElement("a");
 		a.innerText = index + "\n" + activeTab.title;
 		a.href = activeTab.url;
 		a.tabIndex = TAB_INDEX;
@@ -65,7 +65,7 @@ chrome.windows.getAll({
 		div.appendChild(a);
 		container.appendChild(div);
 
-		var ul = document.createElement("ul");
+		const ul = document.createElement("ul");
 		div.addEventListener("drop", evt => {
 			if (draggingData !== null) {
 				const target = draggingData.elem;
@@ -93,8 +93,8 @@ chrome.windows.getAll({
 			evt.preventDefault();
 		});
 		window.tabs.forEach(tab => {
-			var li = document.createElement("li");
-			var tabLink = document.createElement("tab-link");
+			const li = document.createElement("li");
+			const tabLink = document.createElement("tab-link");
 			tabLink.setTab(tab);
 			if (tab.active) {
 				// TODO: 見やすい目立たせ方にする
@@ -128,11 +128,11 @@ chrome.windows.getAll({
 				quality: 50
 			}, dataUrl => {
 				if (typeof dataUrl === "undefined") {
-					var p = document.createElement("p");
+					const p = document.createElement("p");
 					p.innerText = "最小化されているためSS撮影不可"
 					a.appendChild(p);
 				} else {
-					var img = document.createElement("img");
+					const img = document.createElement("img");
 					img.src = dataUrl;
 					img.style.width = "95%";
 					//img.style.border = "2px double black";
@@ -186,10 +186,10 @@ chrome.windows.getAll({
 	});
 });
 
-var container_bookmarks = document.getElementById("container_bookmarks");
-var ul_bookmarks = document.getElementById("search-result_bookmarks");
+const container_bookmarks = document.getElementById("container_bookmarks");
+const ul_bookmarks = document.getElementById("search-result_bookmarks");
 
-var searchWordInput = document.getElementById("search-word");
+const searchWordInput = document.getElementById("search-word");
 searchWordInput.addEventListener("focus", () => {
 	document.body.setAttribute("data-now-searching", "true");
 });
@@ -199,12 +199,12 @@ searchWordInput.addEventListener("blur", () => {
 searchWordInput.focus();
 searchWordInput.tabIndex = TAB_INDEX;
 searchWordInput.addEventListener("keyup", evt => {
-	var value = searchWordInput.value.toLowerCase();
+	const value = searchWordInput.value.toLowerCase();
 	modeChange(value ? "tab-search" : "window-list");
 
 	tabList.forEach(tab => {
-		var targetText = (tab.url + tab.title).toLowerCase();
-		var isMatched = targetText.includes(value);
+		const targetText = (tab.url + tab.title).toLowerCase();
+		const isMatched = targetText.includes(value);
 		tab.elem.style.display = isMatched ? "" : "none";
 	});
 
@@ -214,10 +214,10 @@ searchWordInput.addEventListener("keyup", evt => {
 			if (bookmarks.length > 0) {
 				container_bookmarks.style.display = "";
 				bookmarks.forEach(bookmark => {
-					var isLink = !!bookmark.url;
+					const isLink = !!bookmark.url;
 					if (isLink) {
-						var li = document.createElement("li");
-						var a = document.createElement("a");
+						const li = document.createElement("li");
+						const a = document.createElement("a");
 						const img = document.createElement("img");
 						img.src = `chrome://favicon/${bookmark.url}`;
 						a.appendChild(img);
