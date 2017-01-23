@@ -62,6 +62,9 @@ chrome.windows.getAll({
 			});
 			return false;
 		};
+		a.addEventListener("dragstart", evt => {
+			evt.dataTransfer.effectAllowed = "none";
+		});
 		div.appendChild(a);
 		container.appendChild(div);
 
