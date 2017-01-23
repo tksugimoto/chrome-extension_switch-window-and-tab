@@ -106,7 +106,6 @@ chrome.windows.getAll({
 					tab: tab,
 					tabId: tab.id
 				};
-				evt.dataTransfer.setData("tabId", tab.id);
 			});
 			li.addEventListener("dragend", evt => {
 				draggingData = null;
