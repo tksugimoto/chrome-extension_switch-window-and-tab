@@ -92,6 +92,9 @@ chrome.windows.getAll({
 				}
 			}
 		});
+		div.addEventListener("dragleave", evt => {
+			div.style.opacity = null;
+		});
 		div.addEventListener("dragover", evt => {
 			if (draggingData !== null) {
 				const target = draggingData.elem;
@@ -99,6 +102,9 @@ chrome.windows.getAll({
 				if (oldParent === ul) {
 					// 同じWindow内の移動はしない
 					evt.dataTransfer.dropEffect = "none";
+				} else {
+					// FIXME: マウスを動かすだけで発火するdragoverイベントでstyleを変えるべきでない
+					div.style.opacity = 0.6;
 				}
 			}
 			evt.preventDefault();
