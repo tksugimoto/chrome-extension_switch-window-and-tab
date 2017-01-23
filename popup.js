@@ -93,6 +93,14 @@ chrome.windows.getAll({
 			}
 		});
 		div.addEventListener("dragover", evt => {
+			if (draggingData !== null) {
+				const target = draggingData.elem;
+				const oldParent = target.parentNode;
+				if (oldParent === ul) {
+					// 同じWindow内の移動はしない
+					evt.dataTransfer.dropEffect = "none";
+				}
+			}
 			evt.preventDefault();
 		});
 		window.tabs.forEach(tab => {
