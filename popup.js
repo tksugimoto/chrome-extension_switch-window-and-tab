@@ -115,8 +115,7 @@ chrome.windows.getAll({
 			const tabLink = document.createElement("tab-link");
 			tabLink.setTab(tab);
 			if (tab.active) {
-				// TODO: 見やすい目立たせ方にする
-				tabLink.style.backgroundColor = "white";
+				tabLink.classList.add("active-tab");
 			}
 			li.addEventListener("dragstart", evt => {
 				draggingData = {
