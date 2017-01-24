@@ -91,6 +91,8 @@ chrome.windows.getAll({
 					const div = oldParent.parentNode;
 					div.parentNode.removeChild(div);
 				}
+				// TODO: 移動前Windowでアクティブになったタブの確認とclass追加
+				target.querySelector("tab-link").classList.remove("active-tab");
 			}
 		});
 		div.addEventListener("dragleave", evt => {
