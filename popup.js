@@ -70,6 +70,7 @@ chrome.windows.getAll({
 
 		const ul = document.createElement("ul");
 		div.addEventListener("drop", evt => {
+			div.style.opacity = null;
 			if (draggingData !== null) {
 				const target = draggingData.elem;
 				const oldParent = target.parentNode;
