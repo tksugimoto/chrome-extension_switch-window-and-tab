@@ -55,7 +55,7 @@ chrome.windows.getAll({
 		a.innerText = index + "\n" + activeTab.title;
 		a.href = activeTab.url;
 		a.tabIndex = TAB_INDEX;
-		a.className = "window-link"
+		a.className = "window-link";
 		a.onclick = () => {
 			chrome.windows.update(window.id, {
 				focused: true
@@ -147,7 +147,7 @@ chrome.windows.getAll({
 			}, dataUrl => {
 				if (typeof dataUrl === "undefined") {
 					const p = document.createElement("p");
-					p.innerText = "最小化されているためSS撮影不可"
+					p.innerText = "最小化されているためSS撮影不可";
 					a.appendChild(p);
 				} else {
 					const img = document.createElement("img");
