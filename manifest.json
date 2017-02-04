@@ -1,9 +1,9 @@
 {
-	"name": "タブ・ウインドウ切り替え",
+	"name": "Switch tab/window",
 	"version": "0.1",
 	"manifest_version": 2,
 
-	"description": "",
+	"description": "タブ・ウインドウを一覧表示・切り替え",
 
 	"permissions": [
 		"bookmarks",
