@@ -37,7 +37,7 @@
 			display: -webkit-box;
 			display: box;
 		}
-		#container > div {
+		#container .chrome-window {
 			-webkit-box-flex: 1;
 			box-flex: 1;
 			width: 100%;
@@ -54,13 +54,13 @@
 			background: white;
 		}
 
-		#container > div:nth-child(3n+1) {
+		#container .chrome-window:nth-child(3n+1) {
 			background: #5cc1cb;
 		}
-		#container > div:nth-child(3n+2) {
+		#container .chrome-window:nth-child(3n+2) {
 			background: #d36361;
 		}
-		#container > div:nth-child(3n+3) {
+		#container .chrome-window:nth-child(3n+3) {
 			background: #92bd3a;
 		}
 		body[data-mode="tab-search"] a.window-link {
@@ -69,32 +69,32 @@
 		body {
 			counter-reset: window -1;
 		}
-		#container > div:nth-child(-n+10):before {
+		#container .chrome-window:nth-child(-n+10):before {
 			counter-increment: window;
-			content: counter(window);
+			content: counter(wsindow);
 			left: 0;
 		}
-		#container > div:nth-last-child(-n+3):after {
+		#container .chrome-window:nth-last-child(-n+3):after {
 			right: 0;
 		}
-		#container > div:nth-last-child(3):after {
+		#container .chrome-window:nth-last-child(3):after {
 			content: "q";
 		}
-		#container > div:nth-last-child(2):after {
+		#container .chrome-window:nth-last-child(2):after {
 			content: "w";
 		}
-		#container > div:nth-last-child(1):after {
+		#container .chrome-window:nth-last-child(1):after {
 			content: "e";
 		}
-		#container > div:nth-child(-n+10):before,
-		#container > div:nth-last-child(-n+3):after {
+		#container .chrome-window:nth-child(-n+10):before,
+		#container .chrome-window:nth-last-child(-n+3):after {
 			position: absolute;
 			top: 0;
 			background: white;
 			padding: 2px;
 		}
-		body[data-now-searching="true"] #container > div:nth-child(-n+10):before,
-		body[data-now-searching="true"] #container > div:nth-last-child(-n+3):after {
+		body[data-now-searching="true"] #container .chrome-window:nth-child(-n+10):before,
+		body[data-now-searching="true"] #container .chrome-window:nth-last-child(-n+3):after {
 			content: none;
 		}
 	</style>

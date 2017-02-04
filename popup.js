@@ -49,6 +49,7 @@ chrome.windows.getAll({
 	targetWindows.forEach((window, index) => {
 		const container = document.getElementById("container");
 		const div = document.createElement("div");
+		div.classList.add("chrome-window");
 
 		const activeTab = window.tabs.find(tab => tab.active);
 		const a = document.createElement("a");
