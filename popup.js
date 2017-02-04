@@ -77,15 +77,14 @@ chrome.windows.getAll({
 		div.addEventListener("drop", evt => {
 			div.style.opacity = null;
 			if (draggingData !== null) {
-				const target = draggingData.elem;
-				const oldParent = target.parentNode;
-				if (oldParent === ul) {
+				if (chromeWindow.isSameWindow(draggingData.chromeWindow)) {
 					// 同じWindow内の移動はしない
 					return;
 				}
-				if (draggingData.tab.incognito !== chromeWindow.incognito) {
+				if (!chromeWindow.canAcceptTabMove(draggingData.tab)) {
 					return;
 				}
+				const target = draggingData.elem;
 				ul.appendChild(target);
 				// 参照渡しでwindowIdを変更する
 				// TODO: windowIdをちゃんと更新する仕組み作成
@@ -94,6 +93,7 @@ chrome.windows.getAll({
 					windowId: chromeWindow.id,
 					index: -1
 				});
+				const oldParent = target.parentNode;
 				if (oldParent.children.length === 0) {
 					// Window内のタブが無くなってWindowが閉じた
 					const div = oldParent.parentNode;
@@ -132,6 +132,7 @@ chrome.windows.getAll({
 			}
 			li.addEventListener("dragstart", evt => {
 				draggingData = {
+					chromeWindow,
 					elem: li,
 					tab: tab,
 					tabId: tab.id
@@ -336,5 +337,13 @@ class ChromeWindow {
 		this._originalWindowObject = _originalWindowObject;
 		// オリジナルのプロパティをコピー
 		Object.assign(this, _originalWindowObject);
+	}
+	isSameWindow(targetChromeWindow) {
+		if (!targetChromeWindow) return false;
+		return this.id === targetChromeWindow.id;
+	}
+	canAcceptTabMove(targetTab) {
+		if (!targetTab) return false;
+		return targetTab.incognito === this.incognito;
 	}
 }
