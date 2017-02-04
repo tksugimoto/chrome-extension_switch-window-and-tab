@@ -82,6 +82,9 @@ chrome.windows.getAll({
 					// 同じWindow内の移動はしない
 					return;
 				}
+				if (draggingData.tab.incognito !== window.incognito) {
+					return;
+				}
 				ul.appendChild(target);
 				// 参照渡しでwindowIdを変更する
 				// TODO: windowIdをちゃんと更新する仕組み作成
@@ -108,6 +111,9 @@ chrome.windows.getAll({
 				const oldParent = target.parentNode;
 				if (oldParent === ul) {
 					// 同じWindow内の移動はしない
+					evt.dataTransfer.dropEffect = "none";
+				} else if (draggingData.tab.incognito !== window.incognito) {
+					// シークレットウィンドウと通常ウィンドウ間のタブ移動はできない
 					evt.dataTransfer.dropEffect = "none";
 				} else {
 					// FIXME: マウスを動かすだけで発火するdragoverイベントでstyleを変えるべきでない
