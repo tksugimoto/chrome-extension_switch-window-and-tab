@@ -251,6 +251,15 @@ searchWordInput.addEventListener("keyup", evt => {
 								});
 							});
 						});
+						a.addEventListener("keydown", function (evt) {
+							if (/^(s|i)$/i.test(evt.key)) {
+								// シークレットウィンドウで開く
+								chrome.windows.create({
+									url: this.href,
+									incognito: true
+								});
+							}
+						});
 						li.appendChild(a);
 						ul_bookmarks.appendChild(li);
 					}
