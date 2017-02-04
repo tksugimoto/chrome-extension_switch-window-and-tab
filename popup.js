@@ -29,9 +29,10 @@ chrome.windows.getAll({
 		"normal"
 	]
 }, windows => {
+	const chromeWindows = windows.map(ChromeWindow.convert);
 	const selfUrl = location.href;
-	const targetWindows = windows.filter(window => {
-		const isThisWindow = window.tabs.length === 1 && window.tabs[0].url === selfUrl;
+	const targetWindows = chromeWindows.filter(chromeWindow => {
+		const isThisWindow = chromeWindow.tabs.length === 1 && chromeWindow.tabs[0].url === selfUrl;
 		return !isThisWindow;
 	});
 	if (popupWindowFirst.checked) {
@@ -46,22 +47,22 @@ chrome.windows.getAll({
 		});
 	}
 	let draggingData = null;
-	targetWindows.forEach((window, index) => {
+	targetWindows.forEach((chromeWindow, index) => {
 		const container = document.getElementById("container");
 		const div = document.createElement("div");
 		div.classList.add("chrome-window");
-		if (window.incognito) {
+		if (chromeWindow.incognito) {
 			div.classList.add("incognito");
 		}
 
-		const activeTab = window.tabs.find(tab => tab.active);
+		const activeTab = chromeWindow.tabs.find(tab => tab.active);
 		const a = document.createElement("a");
 		a.innerText = index + "\n" + activeTab.title;
 		a.href = activeTab.url;
 		a.tabIndex = TAB_INDEX;
 		a.className = "window-link";
 		a.onclick = () => {
-			chrome.windows.update(window.id, {
+			chrome.windows.update(chromeWindow.id, {
 				focused: true
 			});
 			return false;
@@ -82,15 +83,15 @@ chrome.windows.getAll({
 					// 同じWindow内の移動はしない
 					return;
 				}
-				if (draggingData.tab.incognito !== window.incognito) {
+				if (draggingData.tab.incognito !== chromeWindow.incognito) {
 					return;
 				}
 				ul.appendChild(target);
 				// 参照渡しでwindowIdを変更する
 				// TODO: windowIdをちゃんと更新する仕組み作成
-				draggingData.tab.windowId = window.id;
+				draggingData.tab.windowId = chromeWindow.id;
 				chrome.tabs.move(draggingData.tabId, {
-					windowId: window.id,
+					windowId: chromeWindow.id,
 					index: -1
 				});
 				if (oldParent.children.length === 0) {
@@ -112,7 +113,7 @@ chrome.windows.getAll({
 				if (oldParent === ul) {
 					// 同じWindow内の移動はしない
 					evt.dataTransfer.dropEffect = "none";
-				} else if (draggingData.tab.incognito !== window.incognito) {
+				} else if (draggingData.tab.incognito !== chromeWindow.incognito) {
 					// シークレットウィンドウと通常ウィンドウ間のタブ移動はできない
 					evt.dataTransfer.dropEffect = "none";
 				} else {
@@ -122,7 +123,7 @@ chrome.windows.getAll({
 			}
 			evt.preventDefault();
 		});
-		window.tabs.forEach(tab => {
+		chromeWindow.tabs.forEach(tab => {
 			const li = document.createElement("li");
 			const tabLink = document.createElement("tab-link");
 			tabLink.setTab(tab);
@@ -151,7 +152,7 @@ chrome.windows.getAll({
 
 		// SS撮影の処理が重い
 		displayScreenshot.checked && setTimeout(() => {
-			chrome.tabs.captureVisibleTab(window.id, {
+			chrome.tabs.captureVisibleTab(chromeWindow.id, {
 				format: "jpeg",
 				quality: 50
 			}, dataUrl => {
@@ -326,3 +327,14 @@ document.querySelectorAll(".mode-tab").forEach(elem => {
 document.getElementById("tab-search").addEventListener("click", () => {
 	searchWordInput.focus();
 });
+
+class ChromeWindow {
+	static convert(windowObject) {
+		return new ChromeWindow(windowObject)
+	}
+	constructor(_originalWindowObject) {
+		this._originalWindowObject = _originalWindowObject;
+		// オリジナルのプロパティをコピー
+		Object.assign(this, _originalWindowObject);
+	}
+}
