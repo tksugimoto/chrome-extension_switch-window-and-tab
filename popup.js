@@ -50,6 +50,9 @@ chrome.windows.getAll({
 		const container = document.getElementById("container");
 		const div = document.createElement("div");
 		div.classList.add("chrome-window");
+		if (window.incognito) {
+			div.classList.add("incognito");
+		}
 
 		const activeTab = window.tabs.find(tab => tab.active);
 		const a = document.createElement("a");
