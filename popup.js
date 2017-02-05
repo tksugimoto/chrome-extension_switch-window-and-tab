@@ -85,6 +85,7 @@ chrome.windows.getAll({
 					return;
 				}
 				const target = draggingData.elem;
+				const oldParent = target.parentNode;
 				ul.appendChild(target);
 				// 参照渡しでwindowIdを変更する
 				// TODO: windowIdをちゃんと更新する仕組み作成
@@ -93,7 +94,6 @@ chrome.windows.getAll({
 					windowId: chromeWindow.id,
 					index: -1
 				});
-				const oldParent = target.parentNode;
 				if (oldParent.children.length === 0) {
 					// Window内のタブが無くなってWindowが閉じた
 					const div = oldParent.parentNode;
