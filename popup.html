@@ -100,6 +100,14 @@
 		body[data-now-searching="true"] #container .chrome-window:nth-last-child(-n+3):after {
 			content: none;
 		}
+		#search-result_bookmarks a:focus:after {
+			content: "Enter/Spaceキーで開く、S/Iキーならシークレットウィンドウで開く";
+			margin-left: 10px;
+			color: red;
+			text-decoration: none;
+			display: inline-block;
+			height: 1em;
+		}
 	</style>
 	<link rel="import" href="/web-components/tab-link.html">
 	<link rel="import" href="/web-components/check-box.html">
