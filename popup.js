@@ -97,7 +97,7 @@ chrome.windows.getAll({
 				ul.appendChild(target);
 				// 参照渡しでwindow(id)を変更する
 				draggingData.tab.window = chromeWindow;
-				chrome.tabs.move(draggingData.tabId, {
+				chrome.tabs.move(draggingData.tab.id, {
 					windowId: chromeWindow.id,
 					index: -1
 				});
@@ -138,8 +138,7 @@ chrome.windows.getAll({
 			li.addEventListener("dragstart", evt => {
 				draggingData = {
 					elem: li,
-					tab: tab,
-					tabId: tab.id
+					tab: tab
 				};
 			});
 			li.addEventListener("dragend", evt => {
