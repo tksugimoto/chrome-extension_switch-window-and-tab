@@ -108,12 +108,10 @@ chrome.windows.getAll({
 		});
 		div.addEventListener("dragover", evt => {
 			if (draggingData !== null) {
-				const target = draggingData.elem;
-				const oldParent = target.parentNode;
-				if (oldParent === ul) {
+				if (chromeWindow.isSameWindow(draggingData.chromeWindow)) {
 					// 同じWindow内の移動はしない
 					evt.dataTransfer.dropEffect = "none";
-				} else if (draggingData.tab.incognito !== chromeWindow.incognito) {
+				} else if (!chromeWindow.canAcceptTabMove(draggingData.tab)) {
 					// シークレットウィンドウと通常ウィンドウ間のタブ移動はできない
 					evt.dataTransfer.dropEffect = "none";
 				} else {
