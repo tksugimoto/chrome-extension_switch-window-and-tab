@@ -85,7 +85,7 @@ chrome.windows.getAll({
 		div.addEventListener("drop", evt => {
 			div.style.opacity = null;
 			if (draggingData !== null) {
-				if (chromeWindow.isSameWindow(draggingData.chromeWindow)) {
+				if (chromeWindow.isSameWindow(draggingData.tab.window)) {
 					// 同じWindow内の移動はしない
 					return;
 				}
@@ -115,7 +115,7 @@ chrome.windows.getAll({
 		});
 		div.addEventListener("dragover", evt => {
 			if (draggingData !== null) {
-				if (chromeWindow.isSameWindow(draggingData.chromeWindow)) {
+				if (chromeWindow.isSameWindow(draggingData.tab.window)) {
 					// 同じWindow内の移動はしない
 					evt.dataTransfer.dropEffect = "none";
 				} else if (!chromeWindow.canAcceptTabMove(draggingData.tab)) {
@@ -137,7 +137,6 @@ chrome.windows.getAll({
 			}
 			li.addEventListener("dragstart", evt => {
 				draggingData = {
-					chromeWindow,
 					elem: li,
 					tab: tab,
 					tabId: tab.id
