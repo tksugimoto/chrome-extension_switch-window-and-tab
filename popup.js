@@ -48,6 +48,14 @@ chrome.windows.getAll({
 	}
 	let draggingData = null;
 	targetWindows.forEach((chromeWindow, index) => {
+		chromeWindow.tabs.forEach(tab => {
+			tab.window = chromeWindow;
+
+			delete tab.windowId;
+			Object.defineProperty(tab, "windowId", {
+				get: function() { return this.window.id; }
+			});
+		});
 		const container = document.getElementById("container");
 		const div = document.createElement("div");
 		div.classList.add("chrome-window");
@@ -87,9 +95,8 @@ chrome.windows.getAll({
 				const target = draggingData.elem;
 				const oldParent = target.parentNode;
 				ul.appendChild(target);
-				// 参照渡しでwindowIdを変更する
-				// TODO: windowIdをちゃんと更新する仕組み作成
-				draggingData.tab.windowId = chromeWindow.id;
+				// 参照渡しでwindow(id)を変更する
+				draggingData.tab.window = chromeWindow;
 				chrome.tabs.move(draggingData.tabId, {
 					windowId: chromeWindow.id,
 					index: -1
