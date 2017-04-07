@@ -273,6 +273,12 @@ searchWordInput.addEventListener("keyup", evt => {
 									url: evt.currentTarget.href,
 									incognito: true
 								});
+							} else if (/^n$/i.test(evt.key)) {
+								// 新しいウィンドウで開く
+								chrome.windows.create({
+									url: evt.currentTarget.href,
+									state: "maximized"
+								});
 							}
 						});
 						li.appendChild(a);
