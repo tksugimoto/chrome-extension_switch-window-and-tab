@@ -1,11 +1,11 @@
 "use strict";
 
-var latestPopupId = null;
+let latestPopupId = null;
 
 chrome.commands.onCommand.addListener(command => {
 	if (command === "switch_tab") {
 		chrome.windows.getCurrent(function (wInfo){
-			var createData = {
+			const createData = {
 				width: 1200,
 				height: 800,
 				type: "popup",
@@ -18,7 +18,7 @@ chrome.commands.onCommand.addListener(command => {
 			chrome.tabs.query({
 				url: chrome.extension.getURL("/popup.html")
 			}, tabs => {
-				var tabIds = tabs.map(tab => tab.id);
+				const tabIds = tabs.map(tab => tab.id);
 				chrome.tabs.remove(tabIds, () => {
 					latestPopupId = null;
 					chrome.windows.create(createData, window => {
