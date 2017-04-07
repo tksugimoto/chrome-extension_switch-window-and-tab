@@ -3,14 +3,14 @@
 const TAB_INDEX = 1;
 const tabList = [];
 
-function setupCheckBox(id) {
+const setupCheckBox = id => {
 	const elem = document.getElementById(id);
 	elem.checked = localStorage[id] === "true";
 	elem.addEventListener("change", evt => {
 		localStorage[id] = evt.checked;
 	});
 	return elem;
-}
+};
 
 const displayScreenshot = setupCheckBox("display-screenshot");
 const popupWindowFirst = setupCheckBox("popup-window-first");
@@ -256,21 +256,21 @@ searchWordInput.addEventListener("keyup", evt => {
 						a.appendChild(img);
 						a.appendChild(document.createTextNode(bookmark.title || bookmark.url));
 						a.href = bookmark.url;
-						a.addEventListener("click", function (evt) {
+						a.addEventListener("click", evt => {
 							evt.preventDefault();
 							chrome.tabs.create({
-								url: this.href
+								url: evt.currentTarget.href
 							}, tab=> {
 								chrome.windows.update(tab.windowId, {
 									focused: true
 								});
 							});
 						});
-						a.addEventListener("keydown", function (evt) {
+						a.addEventListener("keydown", evt => {
 							if (/^(s|i)$/i.test(evt.key)) {
 								// シークレットウィンドウで開く
 								chrome.windows.create({
-									url: this.href,
+									url: evt.currentTarget.href,
 									incognito: true
 								});
 							}
@@ -319,9 +319,9 @@ searchWordInput.addEventListener("keydown", evt => {
 	}
 });
 
-function modeChange(modeName) {
+const modeChange = modeName => {
 	document.body.setAttribute("data-mode", modeName);
-}
+};
 
 document.querySelectorAll(".mode-tab").forEach(elem => {
 	elem.addEventListener("click", () => {
