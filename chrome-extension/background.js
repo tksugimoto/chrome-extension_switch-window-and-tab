@@ -4,7 +4,7 @@ let latestPopupId = null;
 
 chrome.commands.onCommand.addListener(command => {
 	if (command === "switch_tab") {
-		chrome.windows.getCurrent(function (wInfo){
+		chrome.windows.getCurrent(wInfo => {
 			const createData = {
 				width: 1200,
 				height: 800,
