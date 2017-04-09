@@ -6,14 +6,10 @@ chrome.commands.onCommand.addListener(command => {
 	if (command === "switch_tab") {
 		chrome.windows.getCurrent(wInfo => {
 			const createData = {
-				width: 1200,
-				height: 800,
 				type: "popup",
+				state: "fullscreen",
 				url: chrome.extension.getURL("/popup.html")
 			};
-			// 今のウィンドウの中央に表示
-			createData.left = wInfo.left + ((wInfo.width - createData.width) / 2 | 0);
-			createData.top = wInfo.top + ((wInfo.height - createData.height) / 2 | 0);
 
 			chrome.tabs.query({
 				url: chrome.extension.getURL("/popup.html")
