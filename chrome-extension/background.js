@@ -4,14 +4,16 @@ let latestPopupId = null;
 
 chrome.commands.onCommand.addListener(command => {
 	if (command === "switch_tab") {
+		const popupUrl = chrome.extension.getURL("/popup.html");
+
 		const createData = {
 			type: "popup",
 			state: "fullscreen",
-			url: chrome.extension.getURL("/popup.html")
+			url: popupUrl
 		};
 
 		chrome.tabs.query({
-			url: chrome.extension.getURL("/popup.html")
+			url: popupUrl
 		}, tabs => {
 			const tabIds = tabs.map(tab => tab.id);
 			chrome.tabs.remove(tabIds, () => {
