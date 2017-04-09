@@ -4,22 +4,20 @@ let latestPopupId = null;
 
 chrome.commands.onCommand.addListener(command => {
 	if (command === "switch_tab") {
-		chrome.windows.getCurrent(wInfo => {
-			const createData = {
-				type: "popup",
-				state: "fullscreen",
-				url: chrome.extension.getURL("/popup.html")
-			};
+		const createData = {
+			type: "popup",
+			state: "fullscreen",
+			url: chrome.extension.getURL("/popup.html")
+		};
 
-			chrome.tabs.query({
-				url: chrome.extension.getURL("/popup.html")
-			}, tabs => {
-				const tabIds = tabs.map(tab => tab.id);
-				chrome.tabs.remove(tabIds, () => {
-					latestPopupId = null;
-					chrome.windows.create(createData, window => {
-						latestPopupId = window.id;
-					});
+		chrome.tabs.query({
+			url: chrome.extension.getURL("/popup.html")
+		}, tabs => {
+			const tabIds = tabs.map(tab => tab.id);
+			chrome.tabs.remove(tabIds, () => {
+				latestPopupId = null;
+				chrome.windows.create(createData, window => {
+					latestPopupId = window.id;
 				});
 			});
 		});
