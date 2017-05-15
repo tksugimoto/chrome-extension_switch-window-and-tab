@@ -267,6 +267,7 @@ searchWordInput.addEventListener("keyup", evt => {
 							});
 						});
 						a.addEventListener("keydown", evt => {
+							if (evt.altKey) return;
 							if (/^(s|i)$/i.test(evt.key)) {
 								// シークレットウィンドウで開く
 								chrome.windows.create({
