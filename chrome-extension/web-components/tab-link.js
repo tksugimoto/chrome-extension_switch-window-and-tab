@@ -18,7 +18,7 @@
 	MyElementProto.setTab = function (tab) {
 		// TODO: 2回以上setされた時の対策
 		this.shadowRoot.getElementById("container").href = tab.url;
-		this.shadowRoot.getElementById("title").innerText = tab.title;
+		this.shadowRoot.getElementById("title").innerText = tab.title || tab.url;
 		if (typeof tab.favIconUrl === "string") {
 			var icon = this.shadowRoot.getElementById("icon");
 			icon.src = tab.favIconUrl;
