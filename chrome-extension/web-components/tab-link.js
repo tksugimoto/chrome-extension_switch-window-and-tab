@@ -4,7 +4,7 @@
 	const thatDoc = document;
 	const thisDoc = thatDoc.currentScript.ownerDocument;
 	
-	const template = thisDoc.querySelector('template').content;
+	const template = thisDoc.querySelector("template").content;
 	
 	class TabLinkElement extends HTMLElement {
 
