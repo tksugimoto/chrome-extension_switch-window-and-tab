@@ -10,10 +10,10 @@
 
 		constructor() {
 			super();
-		}
 
-		createdCallback() {
-			this.createShadowRoot();
+			this.attachShadow({
+				mode: "open"
+			});
 			
 			const clone = thatDoc.importNode(template, true);
 			this.shadowRoot.appendChild(clone);
@@ -48,5 +48,5 @@
 
 	}
 	
-	thatDoc.registerElement("tab-link", TabLinkElement);
+	window.customElements.define("tab-link", TabLinkElement);
 })(window, document);
