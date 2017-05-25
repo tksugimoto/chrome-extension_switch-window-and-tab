@@ -1,4 +1,4 @@
-(function (window, document) {
+((window, document) => {
 	"use strict";
 	
 	const thatDoc = document;
