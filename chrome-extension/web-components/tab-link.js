@@ -1,10 +1,10 @@
 (function (window, document) {
 	"use strict";
 	
-	var thatDoc = document;
-	var thisDoc = thatDoc.currentScript.ownerDocument;
+	const thatDoc = document;
+	const thisDoc = thatDoc.currentScript.ownerDocument;
 	
-	var template = thisDoc.querySelector('template').content;
+	const template = thisDoc.querySelector('template').content;
 	
 	class TabLinkElement extends HTMLElement {
 
@@ -15,7 +15,7 @@
 		createdCallback() {
 			this.createShadowRoot();
 			
-			var clone = thatDoc.importNode(template, true);
+			const clone = thatDoc.importNode(template, true);
 			this.shadowRoot.appendChild(clone);
 		}
 
@@ -24,14 +24,14 @@
 			this.shadowRoot.getElementById("container").href = tab.url;
 			this.shadowRoot.getElementById("title").innerText = tab.title || tab.url;
 			if (typeof tab.favIconUrl === "string") {
-				var icon = this.shadowRoot.getElementById("icon");
+				const icon = this.shadowRoot.getElementById("icon");
 				icon.src = tab.favIconUrl;
 				icon.addEventListener("error", () => {
 					icon.style.display = "none";
 				});
 			}
 			
-			var link = this.shadowRoot.getElementById("container");
+			const link = this.shadowRoot.getElementById("container");
 			link.addEventListener("click", (evt) => {
 				evt.preventDefault();
 				chrome.tabs.update(tab.id, {
