@@ -8,7 +8,7 @@
 	
 	class TabLinkElement extends HTMLElement {
 
-		constructor() {
+		constructor(tab) {
 			super();
 
 			this.attachShadow({
@@ -17,10 +17,7 @@
 			
 			const clone = thatDoc.importNode(template, true);
 			this.shadowRoot.appendChild(clone);
-		}
 
-		setTab(tab) {
-			// TODO: 2回以上setされた時の対策
 			this.shadowRoot.getElementById("container").href = tab.url;
 			this.shadowRoot.getElementById("title").innerText = tab.title || tab.url;
 			if (typeof tab.favIconUrl === "string") {
@@ -49,4 +46,5 @@
 	}
 	
 	window.customElements.define("tab-link", TabLinkElement);
+	window.TabLinkElement = TabLinkElement;
 })(window, document);
