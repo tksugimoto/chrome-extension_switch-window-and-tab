@@ -11,24 +11,24 @@
 		constructor(tab) {
 			super();
 
-			this.attachShadow({
-				mode: "open"
+			const shadowRoot = this.attachShadow({
+				mode: "closed"
 			});
 			
 			const clone = thatDoc.importNode(template, true);
-			this.shadowRoot.appendChild(clone);
+			shadowRoot.appendChild(clone);
 
-			this.shadowRoot.getElementById("container").href = tab.url;
-			this.shadowRoot.getElementById("title").innerText = tab.title || tab.url;
+			shadowRoot.getElementById("container").href = tab.url;
+			shadowRoot.getElementById("title").innerText = tab.title || tab.url;
 			if (typeof tab.favIconUrl === "string") {
-				const icon = this.shadowRoot.getElementById("icon");
+				const icon = shadowRoot.getElementById("icon");
 				icon.src = tab.favIconUrl;
 				icon.addEventListener("error", () => {
 					icon.style.display = "none";
 				});
 			}
 			
-			const link = this.shadowRoot.getElementById("container");
+			const link = shadowRoot.getElementById("container");
 			link.addEventListener("click", (evt) => {
 				evt.preventDefault();
 				chrome.tabs.update(tab.id, {
