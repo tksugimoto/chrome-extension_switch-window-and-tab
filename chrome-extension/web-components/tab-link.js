@@ -18,8 +18,11 @@
 			const clone = thatDoc.importNode(template, true);
 			shadowRoot.appendChild(clone);
 
-			shadowRoot.getElementById("container").href = tab.url;
+			const link = shadowRoot.getElementById("container");
+			link.href = tab.url;
+
 			shadowRoot.getElementById("title").innerText = tab.title || tab.url;
+
 			if (typeof tab.favIconUrl === "string") {
 				const icon = shadowRoot.getElementById("icon");
 				icon.src = tab.favIconUrl;
@@ -28,7 +31,6 @@
 				});
 			}
 			
-			const link = shadowRoot.getElementById("container");
 			link.addEventListener("click", (evt) => {
 				evt.preventDefault();
 				chrome.tabs.update(tab.id, {
