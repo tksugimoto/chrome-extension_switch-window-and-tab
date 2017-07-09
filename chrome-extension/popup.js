@@ -134,6 +134,27 @@ chrome.windows.getAll({
 			if (tab.active) {
 				tabLink.classList.add("active-tab");
 			}
+			tabLink.addEventListener("keydown", evt => {
+				if (evt.altKey) return;
+				if (/^(s|i)$/i.test(evt.key)) {
+					// シークレットウィンドウで開く
+					chrome.windows.create({
+						url: tab.url,
+						incognito: true
+					});
+				} else if (/^n$/i.test(evt.key)) {
+					// 新しいウィンドウで開く
+					chrome.windows.create({
+						url: tab.url,
+						state: "maximized"
+					});
+				} else if (/^t$/i.test(evt.key)) {
+					// 新しいタブで開く
+					chrome.tabs.create({
+						url: tab.url,
+					});
+				}
+			});
 			li.addEventListener("dragstart", evt => {
 				draggingData = {
 					elem: li,
