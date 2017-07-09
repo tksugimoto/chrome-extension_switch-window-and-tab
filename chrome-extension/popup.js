@@ -134,6 +134,16 @@ chrome.windows.getAll({
 			if (tab.active) {
 				tabLink.classList.add("active-tab");
 			}
+			tabLink.addEventListener("keydown", evt => {
+				if (evt.altKey) return;
+				if (/^(s|i)$/i.test(evt.key)) {
+					// シークレットウィンドウで開く
+					chrome.windows.create({
+						url: tab.url,
+						incognito: true
+					});
+				}
+			});
 			li.addEventListener("dragstart", evt => {
 				draggingData = {
 					elem: li,
