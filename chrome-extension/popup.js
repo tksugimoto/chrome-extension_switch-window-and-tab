@@ -148,6 +148,11 @@ chrome.windows.getAll({
 						url: tab.url,
 						state: "maximized"
 					});
+				} else if (/^t$/i.test(evt.key)) {
+					// 新しいタブで開く
+					chrome.tabs.create({
+						url: tab.url,
+					});
 				}
 			});
 			li.addEventListener("dragstart", evt => {
