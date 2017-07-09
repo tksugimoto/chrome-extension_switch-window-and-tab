@@ -142,6 +142,12 @@ chrome.windows.getAll({
 						url: tab.url,
 						incognito: true
 					});
+				} else if (/^n$/i.test(evt.key)) {
+					// 新しいウィンドウで開く
+					chrome.windows.create({
+						url: tab.url,
+						state: "maximized"
+					});
 				}
 			});
 			li.addEventListener("dragstart", evt => {
