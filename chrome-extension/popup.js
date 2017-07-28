@@ -136,19 +136,20 @@ chrome.windows.getAll({
 			}
 			tabLink.addEventListener("keydown", evt => {
 				if (evt.altKey) return;
-				if (/^(s|i)$/i.test(evt.key)) {
+				const key = evt.key.toLowerCase();
+				if (/^(s|i)$/.test(key)) {
 					// シークレットウィンドウで開く
 					chrome.windows.create({
 						url: tab.url,
 						incognito: true
 					});
-				} else if (/^n$/i.test(evt.key)) {
+				} else if (/^n$/.test(key)) {
 					// 新しいウィンドウで開く
 					chrome.windows.create({
 						url: tab.url,
 						state: "maximized"
 					});
-				} else if (/^t$/i.test(evt.key)) {
+				} else if (/^t$/.test(key)) {
 					// 新しいタブで開く
 					chrome.tabs.create({
 						url: tab.url,
@@ -288,13 +289,14 @@ searchWordInput.addEventListener("keyup", evt => {
 						});
 						a.addEventListener("keydown", evt => {
 							if (evt.altKey) return;
-							if (/^(s|i)$/i.test(evt.key)) {
+							const key = evt.key.toLowerCase();
+							if (/^(s|i)$/.test(key)) {
 								// シークレットウィンドウで開く
 								chrome.windows.create({
 									url: evt.currentTarget.href,
 									incognito: true
 								});
-							} else if (/^n$/i.test(evt.key)) {
+							} else if (/^n$/.test(key)) {
 								// 新しいウィンドウで開く
 								chrome.windows.create({
 									url: evt.currentTarget.href,
