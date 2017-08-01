@@ -21,6 +21,13 @@ let allow_only_half_width_char = (elem => {
 	return elem.checked;
 })(setupCheckBox("allow-only-half-width-char"));
 
+const openIncognitoWindow = url => {
+	chrome.windows.create({
+		url,
+		incognito: true
+	});
+};
+
 chrome.windows.getAll({
 	// tab情報を含める
 	populate: true,
@@ -139,10 +146,7 @@ chrome.windows.getAll({
 				const key = evt.key.toLowerCase();
 				if (key === "s" || key === "i") {
 					// シークレットウィンドウで開く
-					chrome.windows.create({
-						url: tab.url,
-						incognito: true
-					});
+					openIncognitoWindow(tab.url);
 				} else if (key === "n") {
 					// 新しいウィンドウで開く
 					chrome.windows.create({
@@ -292,10 +296,7 @@ searchWordInput.addEventListener("keyup", evt => {
 							const key = evt.key.toLowerCase();
 							if (key === "s" || key === "i") {
 								// シークレットウィンドウで開く
-								chrome.windows.create({
-									url: evt.currentTarget.href,
-									incognito: true
-								});
+								openIncognitoWindow(evt.currentTarget.href);
 							} else if (key === "n") {
 								// 新しいウィンドウで開く
 								chrome.windows.create({
