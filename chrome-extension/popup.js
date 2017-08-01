@@ -28,6 +28,13 @@ const openIncognitoWindow = url => {
 	});
 };
 
+const openNewWindow = url => {
+	chrome.windows.create({
+		url,
+		state: "maximized"
+	});
+};
+
 chrome.windows.getAll({
 	// tab情報を含める
 	populate: true,
@@ -149,10 +156,7 @@ chrome.windows.getAll({
 					openIncognitoWindow(tab.url);
 				} else if (key === "n") {
 					// 新しいウィンドウで開く
-					chrome.windows.create({
-						url: tab.url,
-						state: "maximized"
-					});
+					openNewWindow(tab.url);
 				} else if (key === "t") {
 					// 新しいタブで開く
 					chrome.tabs.create({
@@ -299,10 +303,7 @@ searchWordInput.addEventListener("keyup", evt => {
 								openIncognitoWindow(evt.currentTarget.href);
 							} else if (key === "n") {
 								// 新しいウィンドウで開く
-								chrome.windows.create({
-									url: evt.currentTarget.href,
-									state: "maximized"
-								});
+								openNewWindow(evt.currentTarget.href);
 							}
 						});
 						li.appendChild(a);
