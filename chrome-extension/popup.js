@@ -304,6 +304,11 @@ searchWordInput.addEventListener("keyup", evt => {
 							} else if (key === "n") {
 								// 新しいウィンドウで開く
 								openNewWindow(evt.currentTarget.href);
+							} else if (key === "t") {
+								// 新しいタブで開く
+								chrome.tabs.create({
+									url: evt.currentTarget.href,
+								});
 							}
 						});
 						li.appendChild(a);
