@@ -21,6 +21,20 @@ let allow_only_half_width_char = (elem => {
 	return elem.checked;
 })(setupCheckBox("allow-only-half-width-char"));
 
+const openIncognitoWindow = url => {
+	chrome.windows.create({
+		url,
+		incognito: true
+	});
+};
+
+const openNewWindow = url => {
+	chrome.windows.create({
+		url,
+		state: "maximized"
+	});
+};
+
 chrome.windows.getAll({
 	// tab情報を含める
 	populate: true,
@@ -136,19 +150,14 @@ chrome.windows.getAll({
 			}
 			tabLink.addEventListener("keydown", evt => {
 				if (evt.altKey) return;
-				if (/^(s|i)$/i.test(evt.key)) {
+				const key = evt.key.toLowerCase();
+				if (key === "s" || key === "i") {
 					// シークレットウィンドウで開く
-					chrome.windows.create({
-						url: tab.url,
-						incognito: true
-					});
-				} else if (/^n$/i.test(evt.key)) {
+					openIncognitoWindow(tab.url);
+				} else if (key === "n") {
 					// 新しいウィンドウで開く
-					chrome.windows.create({
-						url: tab.url,
-						state: "maximized"
-					});
-				} else if (/^t$/i.test(evt.key)) {
+					openNewWindow(tab.url);
+				} else if (key === "t") {
 					// 新しいタブで開く
 					chrome.tabs.create({
 						url: tab.url,
@@ -288,18 +297,13 @@ searchWordInput.addEventListener("keyup", evt => {
 						});
 						a.addEventListener("keydown", evt => {
 							if (evt.altKey) return;
-							if (/^(s|i)$/i.test(evt.key)) {
+							const key = evt.key.toLowerCase();
+							if (key === "s" || key === "i") {
 								// シークレットウィンドウで開く
-								chrome.windows.create({
-									url: evt.currentTarget.href,
-									incognito: true
-								});
-							} else if (/^n$/i.test(evt.key)) {
+								openIncognitoWindow(evt.currentTarget.href);
+							} else if (key === "n") {
 								// 新しいウィンドウで開く
-								chrome.windows.create({
-									url: evt.currentTarget.href,
-									state: "maximized"
-								});
+								openNewWindow(evt.currentTarget.href);
 							}
 						});
 						li.appendChild(a);
