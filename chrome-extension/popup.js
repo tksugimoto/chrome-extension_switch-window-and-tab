@@ -35,6 +35,12 @@ const openNewWindow = url => {
 	});
 };
 
+const createTab = url => {
+	chrome.tabs.create({
+		url,
+	});
+};
+
 chrome.windows.getAll({
 	// tab情報を含める
 	populate: true,
@@ -159,9 +165,7 @@ chrome.windows.getAll({
 					openNewWindow(tab.url);
 				} else if (key === "t") {
 					// 新しいタブで開く
-					chrome.tabs.create({
-						url: tab.url,
-					});
+					createTab(tab.url);
 				}
 			});
 			li.addEventListener("dragstart", evt => {
@@ -287,9 +291,7 @@ searchWordInput.addEventListener("keyup", evt => {
 						a.href = bookmark.url;
 						a.addEventListener("click", evt => {
 							evt.preventDefault();
-							chrome.tabs.create({
-								url: evt.currentTarget.href
-							});
+							createTab(evt.currentTarget.href);
 						});
 						a.addEventListener("keydown", evt => {
 							if (evt.altKey) return;
@@ -302,9 +304,7 @@ searchWordInput.addEventListener("keyup", evt => {
 								openNewWindow(evt.currentTarget.href);
 							} else if (key === "t") {
 								// 新しいタブで開く
-								chrome.tabs.create({
-									url: evt.currentTarget.href,
-								});
+								createTab(evt.currentTarget.href);
 							}
 						});
 						li.appendChild(a);
