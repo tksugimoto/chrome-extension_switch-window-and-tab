@@ -289,10 +289,6 @@ searchWordInput.addEventListener("keyup", evt => {
 							evt.preventDefault();
 							chrome.tabs.create({
 								url: evt.currentTarget.href
-							}, tab=> {
-								chrome.windows.update(tab.windowId, {
-									focused: true
-								});
 							});
 						});
 						a.addEventListener("keydown", evt => {
