@@ -41,6 +41,13 @@ const createTab = url => {
 	});
 };
 
+const keyboardShortcutFunctions = {
+	s: openIncognitoWindow,
+	i: openIncognitoWindow,
+	n: openNewWindow,
+	t: createTab,
+};
+
 chrome.windows.getAll({
 	// tab情報を含める
 	populate: true,
@@ -157,16 +164,8 @@ chrome.windows.getAll({
 			tabLink.addEventListener("keydown", evt => {
 				if (evt.altKey) return;
 				const key = evt.key.toLowerCase();
-				if (key === "s" || key === "i") {
-					// シークレットウィンドウで開く
-					openIncognitoWindow(tab.url);
-				} else if (key === "n") {
-					// 新しいウィンドウで開く
-					openNewWindow(tab.url);
-				} else if (key === "t") {
-					// 新しいタブで開く
-					createTab(tab.url);
-				}
+				const func = keyboardShortcutFunctions[key];
+				if (func) func(tab.url);
 			});
 			li.addEventListener("dragstart", evt => {
 				draggingData = {
@@ -296,16 +295,8 @@ searchWordInput.addEventListener("keyup", evt => {
 						a.addEventListener("keydown", evt => {
 							if (evt.altKey) return;
 							const key = evt.key.toLowerCase();
-							if (key === "s" || key === "i") {
-								// シークレットウィンドウで開く
-								openIncognitoWindow(evt.currentTarget.href);
-							} else if (key === "n") {
-								// 新しいウィンドウで開く
-								openNewWindow(evt.currentTarget.href);
-							} else if (key === "t") {
-								// 新しいタブで開く
-								createTab(evt.currentTarget.href);
-							}
+							const func = keyboardShortcutFunctions[key];
+							if (func) func(evt.currentTarget.href);
 						});
 						li.appendChild(a);
 						ul_bookmarks.appendChild(li);
