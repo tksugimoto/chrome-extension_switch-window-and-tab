@@ -157,7 +157,7 @@ chrome.windows.getAll({
 		});
 		chromeWindow.tabs.forEach(tab => {
 			const li = document.createElement('li');
-			const tabLink = new TabLinkElement(tab);
+			const tabLink = new window.TabLinkElement(tab);
 			if (tab.active) {
 				tabLink.classList.add('active-tab');
 			}
