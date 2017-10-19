@@ -109,7 +109,7 @@ chrome.windows.getAll({
 		container.appendChild(div);
 
 		const ul = document.createElement('ul');
-		div.addEventListener('drop', evt => {
+		div.addEventListener('drop', () => {
 			div.style.opacity = null;
 			if (draggingData !== null) {
 				if (chromeWindow.isSameWindow(draggingData.tab.window)) {
@@ -137,7 +137,7 @@ chrome.windows.getAll({
 				target.querySelector('tab-link').classList.remove('active-tab');
 			}
 		});
-		div.addEventListener('dragleave', evt => {
+		div.addEventListener('dragleave', () => {
 			div.style.opacity = null;
 		});
 		div.addEventListener('dragover', evt => {
@@ -167,13 +167,13 @@ chrome.windows.getAll({
 				const func = keyboardShortcutFunctions[key];
 				if (func) func(tab.url);
 			});
-			li.addEventListener('dragstart', evt => {
+			li.addEventListener('dragstart', () => {
 				draggingData = {
 					elem: li,
 					tab,
 				};
 			});
-			li.addEventListener('dragend', evt => {
+			li.addEventListener('dragend', () => {
 				draggingData = null;
 			});
 			li.appendChild(tabLink);
@@ -263,7 +263,7 @@ searchWordInput.addEventListener('blur', () => {
 });
 searchWordInput.focus();
 searchWordInput.tabIndex = TAB_INDEX;
-searchWordInput.addEventListener('keyup', evt => {
+searchWordInput.addEventListener('keyup', () => {
 	const value = searchWordInput.value.toLowerCase();
 	modeChange(value ? 'tab-search' : 'window-list');
 
