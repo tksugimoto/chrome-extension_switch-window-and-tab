@@ -1,10 +1,10 @@
 ((window, document) => {
-	"use strict";
+	'use strict';
 	
 	const thatDoc = document;
 	const thisDoc = thatDoc.currentScript.ownerDocument;
 	
-	const template = thisDoc.querySelector("template").content;
+	const template = thisDoc.querySelector('template').content;
 	
 	class TabLinkElement extends HTMLElement {
 
@@ -12,41 +12,41 @@
 			super();
 
 			const shadowRoot = this.attachShadow({
-				mode: "closed"
+				mode: 'closed',
 			});
 			
 			const clone = thatDoc.importNode(template, true);
 			shadowRoot.appendChild(clone);
 
-			const link = shadowRoot.getElementById("container");
+			const link = shadowRoot.getElementById('container');
 			link.href = tab.url;
 
-			shadowRoot.getElementById("title").innerText = tab.title || tab.url;
+			shadowRoot.getElementById('title').innerText = tab.title || tab.url;
 
-			if (typeof tab.favIconUrl === "string") {
-				const icon = shadowRoot.getElementById("icon");
+			if (typeof tab.favIconUrl === 'string') {
+				const icon = shadowRoot.getElementById('icon');
 				icon.src = tab.favIconUrl;
-				icon.addEventListener("error", () => {
-					icon.style.display = "none";
+				icon.addEventListener('error', () => {
+					icon.style.display = 'none';
 				});
 			}
 			
-			link.addEventListener("click", (evt) => {
+			link.addEventListener('click', (evt) => {
 				evt.preventDefault();
 				chrome.tabs.update(tab.id, {
-					active: true
+					active: true,
 				});
 				chrome.windows.update(tab.windowId, {
-					focused: true
+					focused: true,
 				});
 			});
-			this.addEventListener("click", () => {
+			this.addEventListener('click', () => {
 				link.click();
 			});
 		}
 
 	}
 	
-	window.customElements.define("tab-link", TabLinkElement);
+	window.customElements.define('tab-link', TabLinkElement);
 	window.TabLinkElement = TabLinkElement;
 })(window, document);

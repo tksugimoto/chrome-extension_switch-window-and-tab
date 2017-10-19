@@ -1,33 +1,33 @@
 (function (window, document) {
-	"use strict";
+	'use strict';
 	
 	const ownerDocument = document.currentScript.ownerDocument;
 	
-	const template = ownerDocument.querySelector("template").content;
+	const template = ownerDocument.querySelector('template').content;
 	
 	class CheckBoxElement extends HTMLElement {
 		constructor() {
 			super();
 
 			const shadowRoot = this.attachShadow({
-				mode: "closed"
+				mode: 'closed',
 			});
 
 			const clone = template.cloneNode(true);
 			shadowRoot.appendChild(clone);
 			
-			this._checkbox = shadowRoot.querySelector("input");
+			this._checkbox = shadowRoot.querySelector('input');
 			
-			if (this.hasAttribute("checked")) {
+			if (this.hasAttribute('checked')) {
 				this._checkbox.checked = true;
 			}
-			if (this.hasAttribute("disabled")) {
+			if (this.hasAttribute('disabled')) {
 				this._checkbox.disabled = true;
 			}
 			
-			this._checkbox.addEventListener("change", () => {
+			this._checkbox.addEventListener('change', () => {
 				this.updateCheckedAttribute();
-				const event = new window.Event("change");
+				const event = new window.Event('change');
 				event.checked = this._checkbox.checked;
 				this.dispatchEvent(event);
 			});
@@ -43,12 +43,12 @@
 
 		updateCheckedAttribute() {
 			if (this._checkbox.checked) {
-				this.setAttribute("checked", true);
+				this.setAttribute('checked', true);
 			} else {
-				this.removeAttribute("checked");
+				this.removeAttribute('checked');
 			}
 		}
 	}
 
-	window.customElements.define("check-box", CheckBoxElement);
+	window.customElements.define('check-box', CheckBoxElement);
 })(window, document);
