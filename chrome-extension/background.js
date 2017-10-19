@@ -1,19 +1,19 @@
-"use strict";
+'use strict';
 
 let latestPopupId = null;
 
 chrome.commands.onCommand.addListener(command => {
-	if (command === "switch_tab") {
-		const popupUrl = chrome.extension.getURL("/popup.html");
+	if (command === 'switch_tab') {
+		const popupUrl = chrome.extension.getURL('/popup.html');
 
 		const createData = {
-			type: "popup",
-			state: "fullscreen",
-			url: popupUrl
+			type: 'popup',
+			state: 'fullscreen',
+			url: popupUrl,
 		};
 
 		chrome.tabs.query({
-			url: popupUrl
+			url: popupUrl,
 		}, tabs => {
 			const tabIds = tabs.map(tab => tab.id);
 			chrome.tabs.remove(tabIds, () => {
