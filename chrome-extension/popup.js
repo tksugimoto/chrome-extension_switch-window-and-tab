@@ -84,10 +84,10 @@ chrome.windows.getAll({
 			});
 		});
 		const container = document.getElementById('container');
-		const div = document.createElement('div');
-		div.classList.add('chrome-window');
+		const chromeWindowColumn = document.createElement('div');
+		chromeWindowColumn.classList.add('chrome-window');
 		if (chromeWindow.incognito) {
-			div.classList.add('incognito');
+			chromeWindowColumn.classList.add('incognito');
 		}
 
 		const activeTab = chromeWindow.tabs.find(tab => tab.active);
@@ -105,12 +105,12 @@ chrome.windows.getAll({
 		a.addEventListener('dragstart', evt => {
 			evt.dataTransfer.effectAllowed = 'none';
 		});
-		div.appendChild(a);
-		container.appendChild(div);
+		chromeWindowColumn.appendChild(a);
+		container.appendChild(chromeWindowColumn);
 
 		const ul = document.createElement('ul');
-		div.addEventListener('drop', () => {
-			div.style.opacity = null;
+		chromeWindowColumn.addEventListener('drop', () => {
+			chromeWindowColumn.style.opacity = null;
 			if (draggingData !== null) {
 				if (chromeWindow.isSameWindow(draggingData.tab.window)) {
 					// 同じWindow内の移動はしない
@@ -137,10 +137,10 @@ chrome.windows.getAll({
 				target.querySelector('tab-link').classList.remove('active-tab');
 			}
 		});
-		div.addEventListener('dragleave', () => {
-			div.style.opacity = null;
+		chromeWindowColumn.addEventListener('dragleave', () => {
+			chromeWindowColumn.style.opacity = null;
 		});
-		div.addEventListener('dragover', evt => {
+		chromeWindowColumn.addEventListener('dragover', evt => {
 			if (draggingData !== null) {
 				if (chromeWindow.isSameWindow(draggingData.tab.window)) {
 					// 同じWindow内の移動はしない
@@ -150,7 +150,7 @@ chrome.windows.getAll({
 					evt.dataTransfer.dropEffect = 'none';
 				} else {
 					// FIXME: マウスを動かすだけで発火するdragoverイベントでstyleを変えるべきでない
-					div.style.opacity = 0.6;
+					chromeWindowColumn.style.opacity = 0.6;
 				}
 			}
 			evt.preventDefault();
@@ -184,7 +184,7 @@ chrome.windows.getAll({
 				title: tab.title,
 			});
 		});
-		div.appendChild(ul);
+		chromeWindowColumn.appendChild(ul);
 
 		// SS撮影の処理が重い
 		displayScreenshot.checked && setTimeout(() => {
