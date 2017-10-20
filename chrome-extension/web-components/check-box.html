@@ -5,10 +5,14 @@
 			font-weight: bold;
 		}
 		
+		:host(:not([disabled])) input,
+		:host(:not([disabled])) label {
+			cursor: pointer;
+		}
+		
 		input,
 		label {
-			cursor: pointer;
-			-webkit-user-select: none;
+			user-select: none;
 		}
 		label > input,
 		label > span {
