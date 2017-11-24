@@ -3,28 +3,23 @@
 const TAB_INDEX = 1;
 const tabList = [];
 
-const bookmarkCache = {};
-chrome.bookmarks.getTree(results => {
-	const saveToCache = bookmarkTreeNode => {
-		bookmarkCache[bookmarkTreeNode.id] = bookmarkTreeNode;
-		if (bookmarkTreeNode.children) {
-			bookmarkTreeNode.children.forEach(saveToCache);
-		}
-	};
-	results.forEach(saveToCache);
+const bookmarkCachePromise = new Promise(resolve => {
+	const bookmarkCache = {};
+	chrome.bookmarks.getTree(results => {
+		const saveToCache = bookmarkTreeNode => {
+			bookmarkCache[bookmarkTreeNode.id] = bookmarkTreeNode;
+			if (bookmarkTreeNode.children) {
+				bookmarkTreeNode.children.forEach(saveToCache);
+			}
+		};
+		results.forEach(saveToCache);
+		resolve(bookmarkCache);
+	});
 });
 
 const fetchBookmarkFolderHierarchy = (id, folders = []) => {
-	return Promise.resolve().then(() => {
-		const folderCache = bookmarkCache[id];
-		if (folderCache) return folderCache;
-		return new Promise(resolve => {
-			chrome.bookmarks.get(id, results => {
-				const folder = results[0];
-				bookmarkCache[folder.id] = folder;
-				resolve(folder);
-			});
-		});
+	return bookmarkCachePromise.then(bookmarkCache => {
+		return bookmarkCache[id];
 	}).then(folder => {
 		const newFolders = [folder].concat(folders);
 		if (folder.parentId) return fetchBookmarkFolderHierarchy(folder.parentId, newFolders);
@@ -308,7 +303,6 @@ searchWordInput.addEventListener('keyup', () => {
 			if (bookmarks.length > 0) {
 				container_bookmarks.style.display = '';
 				bookmarks.forEach(bookmark => {
-					bookmarkCache[bookmark.id] = bookmark;
 					const isLink = !!bookmark.url;
 					if (isLink) {
 						const li = document.createElement('li');
