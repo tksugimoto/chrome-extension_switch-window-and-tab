@@ -4,6 +4,16 @@ const TAB_INDEX = 1;
 const tabList = [];
 
 const bookmarkCache = {};
+chrome.bookmarks.getTree(results => {
+	const saveToCache = bookmarkTreeNode => {
+		bookmarkCache[bookmarkTreeNode.id] = bookmarkTreeNode;
+		if (bookmarkTreeNode.children) {
+			bookmarkTreeNode.children.forEach(saveToCache);
+		}
+	};
+	results.forEach(saveToCache);
+});
+
 const fetchBookmarkFolderHierarchy = (id, folders = []) => {
 	return Promise.resolve().then(() => {
 		const folderCache = bookmarkCache[id];
