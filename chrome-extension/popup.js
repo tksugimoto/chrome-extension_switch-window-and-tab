@@ -322,16 +322,11 @@ searchWordInput.addEventListener('keyup', () => {
 							const func = keyboardShortcutFunctions[key];
 							if (func) func(evt.currentTarget.href);
 						});
-						let bookmarkFolderHierarchyFetched = false;
-						a.addEventListener('mouseover', () => {
-							if (bookmarkFolderHierarchyFetched) return;
-							bookmarkFolderHierarchyFetched = true;
-							fetchBookmarkFolderHierarchy(bookmark.parentId).then(folders => {
-								// 先頭は全ブックマークの親なので除外
-								const folderTitles = folders.slice(1).map(folder => folder.title);
-								const title = folderTitles.join(' > ');
-								a.title = title;
-							});
+						fetchBookmarkFolderHierarchy(bookmark.parentId).then(folders => {
+							// 先頭は全ブックマークの親なので除外
+							const folderTitles = folders.slice(1).map(folder => folder.title);
+							const folderHierarchy = folderTitles.join(' > ');
+							li.prepend(`${folderHierarchy} > `);
 						});
 						li.appendChild(a);
 						ul_bookmarks.appendChild(li);
