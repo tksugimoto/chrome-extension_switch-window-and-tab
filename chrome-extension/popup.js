@@ -325,8 +325,14 @@ searchWordInput.addEventListener('keyup', () => {
 						fetchBookmarkFolderHierarchy(bookmark.parentId).then(folders => {
 							// 先頭は全ブックマークの親なので除外
 							const folderTitles = folders.slice(1).map(folder => folder.title);
-							const folderHierarchy = folderTitles.join(' > ');
-							li.prepend(`${folderHierarchy} > `);
+							const folderHierarchyContainer = document.createElement('span');
+							folderTitles.forEach(folderTitle => {
+								const elem = document.createElement('span');
+								elem.innerText = folderTitle;
+								elem.classList.add('bookmark-folder');
+								folderHierarchyContainer.append(elem);
+							});
+							li.prepend(folderHierarchyContainer);
 						});
 						li.appendChild(a);
 						ul_bookmarks.appendChild(li);
