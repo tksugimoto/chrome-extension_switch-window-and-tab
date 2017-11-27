@@ -3,6 +3,30 @@
 const TAB_INDEX = 1;
 const tabList = [];
 
+const bookmarkCachePromise = new Promise(resolve => {
+	const bookmarkCache = {};
+	chrome.bookmarks.getTree(results => {
+		const saveToCache = bookmarkTreeNode => {
+			bookmarkCache[bookmarkTreeNode.id] = bookmarkTreeNode;
+			if (bookmarkTreeNode.children) {
+				bookmarkTreeNode.children.forEach(saveToCache);
+			}
+		};
+		results.forEach(saveToCache);
+		resolve(bookmarkCache);
+	});
+});
+
+const fetchBookmarkFolderHierarchy = (id, folders = []) => {
+	return bookmarkCachePromise.then(bookmarkCache => {
+		return bookmarkCache[id];
+	}).then(folder => {
+		const newFolders = [folder].concat(folders);
+		if (folder.parentId) return fetchBookmarkFolderHierarchy(folder.parentId, newFolders);
+		return newFolders;
+	});
+};
+
 const setupCheckBox = id => {
 	const elem = document.getElementById(id);
 	elem.checked = localStorage[id] === 'true';
@@ -297,6 +321,18 @@ searchWordInput.addEventListener('keyup', () => {
 							const key = evt.key.toLowerCase();
 							const func = keyboardShortcutFunctions[key];
 							if (func) func(evt.currentTarget.href);
+						});
+						fetchBookmarkFolderHierarchy(bookmark.parentId).then(folders => {
+							// 先頭は全ブックマークの親なので除外
+							const folderTitles = folders.slice(1).map(folder => folder.title);
+							const folderHierarchyContainer = document.createElement('span');
+							folderTitles.forEach(folderTitle => {
+								const elem = document.createElement('span');
+								elem.innerText = folderTitle;
+								elem.classList.add('bookmark-folder');
+								folderHierarchyContainer.append(elem);
+							});
+							li.prepend(folderHierarchyContainer);
 						});
 						li.appendChild(a);
 						ul_bookmarks.appendChild(li);
