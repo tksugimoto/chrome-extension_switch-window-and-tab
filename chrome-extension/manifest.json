@@ -17,6 +17,10 @@
 		]
 	},
 
+	"browser_action": {
+		
+	},
+
 	"commands": {
 		"switch_tab": {
 			"description": "タブの切り替えウィンドウ表示",

@@ -30,6 +30,8 @@ const createSwitchTabPopupWindow = () => {
 	});
 };
 
+chrome.browserAction.onClicked.addListener(createSwitchTabPopupWindow);
+
 chrome.windows.onFocusChanged.addListener(windowId => {
 	if (windowId === chrome.windows.WINDOW_ID_NONE) return;
 	if (windowId === latestPopupId) return;
