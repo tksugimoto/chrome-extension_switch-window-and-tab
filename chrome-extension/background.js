@@ -4,27 +4,31 @@ let latestPopupId = null;
 
 chrome.commands.onCommand.addListener(command => {
 	if (command === 'switch_tab') {
-		const popupUrl = chrome.extension.getURL('/popup.html');
-
-		const createData = {
-			type: 'popup',
-			state: 'fullscreen',
-			url: popupUrl,
-		};
-
-		chrome.tabs.query({
-			url: popupUrl,
-		}, tabs => {
-			const tabIds = tabs.map(tab => tab.id);
-			chrome.tabs.remove(tabIds, () => {
-				latestPopupId = null;
-				chrome.windows.create(createData, window => {
-					latestPopupId = window.id;
-				});
-			});
-		});
+		createSwitchTabPopupWindow();
 	}
 });
+
+const createSwitchTabPopupWindow = () => {
+	const popupUrl = chrome.extension.getURL('/popup.html');
+
+	const createData = {
+		type: 'popup',
+		state: 'fullscreen',
+		url: popupUrl,
+	};
+
+	chrome.tabs.query({
+		url: popupUrl,
+	}, tabs => {
+		const tabIds = tabs.map(tab => tab.id);
+		chrome.tabs.remove(tabIds, () => {
+			latestPopupId = null;
+			chrome.windows.create(createData, window => {
+				latestPopupId = window.id;
+			});
+		});
+	});
+};
 
 chrome.windows.onFocusChanged.addListener(windowId => {
 	if (windowId === chrome.windows.WINDOW_ID_NONE) return;
