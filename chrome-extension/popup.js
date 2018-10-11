@@ -38,12 +38,7 @@ const setupCheckBox = id => {
 
 const displayScreenshot = setupCheckBox('display-screenshot');
 const popupWindowFirst = setupCheckBox('popup-window-first');
-let allow_only_half_width_char = (elem => {
-	elem.addEventListener('change', evt => {
-		allow_only_half_width_char = evt.checked;
-	});
-	return elem.checked;
-})(setupCheckBox('allow-only-half-width-char'));
+const defaultImeOff = setupCheckBox('default-ime-off');
 
 const openIncognitoWindow = url => {
 	chrome.windows.create({
@@ -279,6 +274,13 @@ const container_bookmarks = document.getElementById('container_bookmarks');
 const ul_bookmarks = document.getElementById('search-result_bookmarks');
 
 const searchWordInput = document.getElementById('search-word');
+
+// type="email" だと初期状態でIMEがOFFになる
+searchWordInput.type = defaultImeOff.checked ? 'email' : null;
+defaultImeOff.addEventListener('change', evt => {
+	searchWordInput.type = evt.checked ? 'email' : null;
+});
+
 searchWordInput.addEventListener('focus', () => {
 	document.body.setAttribute('data-now-searching', 'true');
 });
@@ -345,36 +347,11 @@ searchWordInput.addEventListener('keyup', () => {
 	}
 });
 
-// 全角入力を半角に変換する
-// TODO: 完全対応
-const codeToKeyMap = {
-	'Minus': '-',
-	'IntlRo': '_',
-	'Period': '.',
-	'Comma': ',',
-	'BracketLeft': '@', 
-};
-for (let i = 0; i < 10; i++) {
-	codeToKeyMap[`Numpad${i}`] = codeToKeyMap[`Digit${i}`] = i.toString();
-}
-'abcdefghijklmnopqrstuvwxyz'.split('').forEach(char => {
-	codeToKeyMap[`Key${char.toUpperCase()}`] = char;
-});
-
 searchWordInput.addEventListener('keydown', evt => {
 	// Escが押されたら入力欄を空にする
 	//   ※keyupだと日本語入力で未確定状態からEscでも反応してしまう
 	if (evt.keyCode === 27) {
 		searchWordInput.value = '';
-	}
-
-	if (allow_only_half_width_char && evt.key === 'Process') {
-		const code = evt.code;
-		const key = codeToKeyMap[code];
-		if (!key) return;
-
-		document.execCommand('insertText', null, key);
-		evt.preventDefault();
 	}
 });
 
