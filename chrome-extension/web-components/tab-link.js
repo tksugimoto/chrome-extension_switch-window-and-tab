@@ -1,11 +1,21 @@
-((window, document) => {
+const templateHTML = `
+	<style>
+		#icon {
+			height: 1em;
+		}
+		#title {
+			word-break: break-word;
+		}
+	</style>
+	<a id="container">
+		<img id="icon">
+		<span id="title">ページタイトル</span>
+	</a>
+`;
+
+((window) => {
 	'use strict';
-	
-	const thatDoc = document;
-	const thisDoc = thatDoc.currentScript.ownerDocument;
-	
-	const template = thisDoc.querySelector('template').content;
-	
+
 	class TabLinkElement extends HTMLElement {
 
 		constructor(tab) {
@@ -14,9 +24,8 @@
 			const shadowRoot = this.attachShadow({
 				mode: 'closed',
 			});
-			
-			const clone = thatDoc.importNode(template, true);
-			shadowRoot.appendChild(clone);
+
+			shadowRoot.innerHTML = templateHTML;
 
 			const link = shadowRoot.getElementById('container');
 			link.href = tab.url;
@@ -30,7 +39,7 @@
 					icon.style.display = 'none';
 				});
 			}
-			
+
 			link.addEventListener('click', (evt) => {
 				evt.preventDefault();
 				chrome.tabs.update(tab.id, {
@@ -46,7 +55,7 @@
 		}
 
 	}
-	
+
 	window.customElements.define('tab-link', TabLinkElement);
 	window.TabLinkElement = TabLinkElement;
-})(window, document);
+})(window);
