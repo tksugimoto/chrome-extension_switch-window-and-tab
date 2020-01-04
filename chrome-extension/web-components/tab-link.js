@@ -54,4 +54,5 @@ class TabLinkElement extends HTMLElement {
 }
 
 window.customElements.define('tab-link', TabLinkElement);
-window.TabLinkElement = TabLinkElement;
+
+export default TabLinkElement;
