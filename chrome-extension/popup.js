@@ -1,5 +1,7 @@
 'use strict';
 
+import TabLinkElement from './web-components/tab-link.js';
+
 const TAB_INDEX = 1;
 const tabList = [];
 
@@ -176,7 +178,7 @@ chrome.windows.getAll({
 		});
 		chromeWindow.tabs.forEach(tab => {
 			const li = document.createElement('li');
-			const tabLink = new window.TabLinkElement(tab);
+			const tabLink = new TabLinkElement(tab);
 			if (tab.active) {
 				tabLink.classList.add('active-tab');
 			}

@@ -1,83 +1,102 @@
-(function (window, document) {
-	'use strict';
-	
-	const ownerDocument = document.currentScript.ownerDocument;
-	
-	const template = ownerDocument.querySelector('template').content;
-	
-	class CheckBoxElement extends HTMLElement {
-		constructor() {
-			super();
-
-			const shadowRoot = this.attachShadow({
-				mode: 'closed',
-			});
-
-			const clone = template.cloneNode(true);
-			shadowRoot.appendChild(clone);
-			
-			this._checkbox = shadowRoot.querySelector('input');
-			
-			this._checkbox.addEventListener('change', () => {
-				const checked = this._checkbox.checked;
-				this._updateCheckedAttribute(checked);
-				const event = new window.Event('change');
-				event.checked = checked;
-				this.dispatchEvent(event);
-			});
+const templateHTML = `
+	<style>
+		input:checked + span  {
+			font-weight: bold;
 		}
 
-		static get observedAttributes() {
-			return [
-				'checked',
-				'disabled',
-				'accesskey',
-			];
+		:host(:not([disabled])) input,
+		:host(:not([disabled])) label {
+			cursor: pointer;
 		}
 
-		attributeChangedCallback(name, oldValue, newValue) {
-			if (name === 'checked') {
-				const checked = newValue !== null;
-				this._checkbox.checked = checked;
-			} else if (name === 'disabled') {
-				const disabled = newValue !== null;
-				this._checkbox.disabled = disabled;
-			} else if (name === 'accesskey') {
-				if (newValue) {
-					this._checkbox.setAttribute('accesskey', newValue);
-				} else {
-					this._checkbox.removeAttribute('accesskey');
-				}
-			}
+		input,
+		label {
+			user-select: none;
 		}
+		label > input,
+		label > span {
+			vertical-align: middle;
+		}
+	</style>
+	<label>
+		<input type="checkbox">
+		<span>
+			<slot></slot>
+		</span>
+	</label>
+`;
 
-		set checked(value) {
-			const checked = !!value;
+class CheckBoxElement extends HTMLElement {
+	constructor() {
+		super();
+
+		const shadowRoot = this.attachShadow({
+			mode: 'closed',
+		});
+
+		shadowRoot.innerHTML = templateHTML;
+
+		this._checkbox = shadowRoot.querySelector('input');
+
+		this._checkbox.addEventListener('change', () => {
+			const checked = this._checkbox.checked;
 			this._updateCheckedAttribute(checked);
-		}
-		get checked() {
-			return this._checkbox.checked;
-		}
+			const event = new window.Event('change');
+			event.checked = checked;
+			this.dispatchEvent(event);
+		});
+	}
 
-		_updateCheckedAttribute(checked) {
-			if (checked) {
-				this.setAttribute('checked', '');
-			} else {
-				this.removeAttribute('checked');
-			}
-		}
+	static get observedAttributes() {
+		return [
+			'checked',
+			'disabled',
+			'accesskey',
+		];
+	}
 
-		set disabled(value) {
-			if (value) {
-				this.setAttribute('disabled', '');
+	attributeChangedCallback(name, oldValue, newValue) {
+		if (name === 'checked') {
+			const checked = newValue !== null;
+			this._checkbox.checked = checked;
+		} else if (name === 'disabled') {
+			const disabled = newValue !== null;
+			this._checkbox.disabled = disabled;
+		} else if (name === 'accesskey') {
+			if (newValue) {
+				this._checkbox.setAttribute('accesskey', newValue);
 			} else {
-				this.removeAttribute('disabled');
+				this._checkbox.removeAttribute('accesskey');
 			}
-		}
-		get disabled() {
-			return this._checkbox.disabled;
 		}
 	}
 
-	window.customElements.define('check-box', CheckBoxElement);
-})(window, document);
+	set checked(value) {
+		const checked = !!value;
+		this._updateCheckedAttribute(checked);
+	}
+	get checked() {
+		return this._checkbox.checked;
+	}
+
+	_updateCheckedAttribute(checked) {
+		if (checked) {
+			this.setAttribute('checked', '');
+		} else {
+			this.removeAttribute('checked');
+		}
+	}
+
+	set disabled(value) {
+		if (value) {
+			this.setAttribute('disabled', '');
+		} else {
+			this.removeAttribute('disabled');
+		}
+	}
+	get disabled() {
+		return this._checkbox.disabled;
+	}
+}
+
+window.customElements.define('check-box', CheckBoxElement);

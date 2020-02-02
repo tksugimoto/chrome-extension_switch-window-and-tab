@@ -1,52 +1,58 @@
-((window, document) => {
-	'use strict';
-	
-	const thatDoc = document;
-	const thisDoc = thatDoc.currentScript.ownerDocument;
-	
-	const template = thisDoc.querySelector('template').content;
-	
-	class TabLinkElement extends HTMLElement {
+const templateHTML = `
+	<style>
+		#icon {
+			height: 1em;
+		}
+		#title {
+			word-break: break-word;
+		}
+	</style>
+	<a id="container">
+		<img id="icon">
+		<span id="title">ページタイトル</span>
+	</a>
+`;
 
-		constructor(tab) {
-			super();
+class TabLinkElement extends HTMLElement {
 
-			const shadowRoot = this.attachShadow({
-				mode: 'closed',
-			});
-			
-			const clone = thatDoc.importNode(template, true);
-			shadowRoot.appendChild(clone);
+	constructor(tab) {
+		super();
 
-			const link = shadowRoot.getElementById('container');
-			link.href = tab.url;
+		const shadowRoot = this.attachShadow({
+			mode: 'closed',
+		});
 
-			shadowRoot.getElementById('title').innerText = tab.title || tab.url;
+		shadowRoot.innerHTML = templateHTML;
 
-			if (typeof tab.favIconUrl === 'string') {
-				const icon = shadowRoot.getElementById('icon');
-				icon.src = tab.favIconUrl;
-				icon.addEventListener('error', () => {
-					icon.style.display = 'none';
-				});
-			}
-			
-			link.addEventListener('click', (evt) => {
-				evt.preventDefault();
-				chrome.tabs.update(tab.id, {
-					active: true,
-				});
-				chrome.windows.update(tab.windowId, {
-					focused: true,
-				});
-			});
-			this.addEventListener('click', () => {
-				link.click();
+		const link = shadowRoot.getElementById('container');
+		link.href = tab.url;
+
+		shadowRoot.getElementById('title').innerText = tab.title || tab.url;
+
+		if (typeof tab.favIconUrl === 'string') {
+			const icon = shadowRoot.getElementById('icon');
+			icon.src = tab.favIconUrl;
+			icon.addEventListener('error', () => {
+				icon.style.display = 'none';
 			});
 		}
 
+		link.addEventListener('click', (evt) => {
+			evt.preventDefault();
+			chrome.tabs.update(tab.id, {
+				active: true,
+			});
+			chrome.windows.update(tab.windowId, {
+				focused: true,
+			});
+		});
+		this.addEventListener('click', () => {
+			link.click();
+		});
 	}
-	
-	window.customElements.define('tab-link', TabLinkElement);
-	window.TabLinkElement = TabLinkElement;
-})(window, document);
+
+}
+
+window.customElements.define('tab-link', TabLinkElement);
+
+export default TabLinkElement;
