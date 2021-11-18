@@ -75,6 +75,7 @@ chrome.windows.getAll({
 	windowTypes: [
 		'popup',
 		'normal',
+		'app',
 	],
 }, windows => {
 	const chromeWindows = windows.map(ChromeWindow.convert);
@@ -88,8 +89,8 @@ chrome.windows.getAll({
 			if (win1.type === win2.type) {
 				return win1.id - win2.id;
 			}
-			if (win1.type === 'popup') return -1;
-			if (win2.type === 'popup') return 1;
+			if (win1.type === 'app') return -1;
+			if (win2.type === 'app') return 1;
 			return 0;
 
 		});
