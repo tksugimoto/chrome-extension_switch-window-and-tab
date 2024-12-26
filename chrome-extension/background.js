@@ -9,7 +9,7 @@ chrome.commands.onCommand.addListener(command => {
 });
 
 const createSwitchTabPopupWindow = () => {
-	const popupUrl = chrome.extension.getURL('/popup.html');
+	const popupUrl = chrome.runtime.getURL('/popup.html');
 
 	const createData = {
 		type: 'popup',
@@ -30,7 +30,7 @@ const createSwitchTabPopupWindow = () => {
 	});
 };
 
-chrome.browserAction.onClicked.addListener(createSwitchTabPopupWindow);
+chrome.action.onClicked.addListener(createSwitchTabPopupWindow);
 
 chrome.windows.onFocusChanged.addListener(windowId => {
 	if (windowId === chrome.windows.WINDOW_ID_NONE) return;
