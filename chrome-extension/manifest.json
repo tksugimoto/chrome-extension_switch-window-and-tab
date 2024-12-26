@@ -6,6 +6,7 @@
 	"description": "タブ・ウインドウを一覧表示・切り替え",
 
 	"permissions": [
+		"favicon",
 		"bookmarks",
 		"tabs"
 	],
