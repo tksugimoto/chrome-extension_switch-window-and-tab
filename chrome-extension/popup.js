@@ -29,6 +29,12 @@ const fetchBookmarkFolderHierarchy = (id, folders = []) => {
 	});
 };
 
+const faviconURL = (pageUrl) => {
+	const url = new URL(chrome.runtime.getURL('/_favicon/'));
+	url.searchParams.set('pageUrl', pageUrl);
+	return url.toString();
+};
+
 const setupCheckBox = id => {
 	const elem = document.getElementById(id);
 	elem.checked = localStorage[id] === 'true';
@@ -313,7 +319,7 @@ searchWordInput.addEventListener('keyup', () => {
 						const li = document.createElement('li');
 						const a = document.createElement('a');
 						const img = document.createElement('img');
-						img.src = `chrome://favicon/${bookmark.url}`;
+						img.src = faviconURL(bookmark.url);
 						a.appendChild(img);
 						a.appendChild(document.createTextNode(bookmark.title || bookmark.url));
 						a.href = bookmark.url;
