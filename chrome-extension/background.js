@@ -13,7 +13,6 @@ const createSwitchTabPopupWindow = () => {
 
 	const createData = {
 		type: 'popup',
-		state: 'fullscreen',
 		url: popupUrl,
 	};
 
@@ -25,6 +24,9 @@ const createSwitchTabPopupWindow = () => {
 			latestPopupId = null;
 			chrome.windows.create(createData, window => {
 				latestPopupId = window.id;
+				chrome.windows.update(window.id, {
+					state: 'fullscreen',
+				});
 			});
 		});
 	});
